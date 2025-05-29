@@ -19,7 +19,7 @@ public class StudentRegistrationController {
 
     @GetMapping("/studentRegistrations")
     public String listStudentRegistrations(
-            @RequestParam(name = RegistrationConstants.PARAM_STUDENT_ID, required = true) int studentId,
+            @RequestParam(name = RegistrationConstants.PARAM_STUDENT_ID, required = true) Long studentId,
             Model model) {
 
         List<StudentRegistration> regs =
