@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Registrations</title>
@@ -22,6 +22,45 @@
                 <td th:text="${reg.registrationDate}">Date</td>
                 <td>
                     <button type="button">Edit</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p th:if="${StudentRegistrations.empty}">
+        No registrations found for this student.
+    </p>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registrations</title>
+</head>
+<body>
+    <h2>Registrations:</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Sr. No.</th>
+                <th>Semester ID</th>
+                <th>Registration Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="reg, it : ${StudentRegistrations}">
+                <td th:text="${it.count}">1</td>
+                <td th:text="${reg.semesterId}">Semester</td>
+                <td th:text="${#temporals.format(reg.registrationDate, 'yyyy-MM-dd')}">Date</td>
+                <td>
+                    <form th:action="@{/studentRegistrationEdit}" method="get">
+                        <input type="hidden" name="stdid" th:value="${reg.studentId}" />
+                        <input type="hidden" name="SemesterID" th:value="${reg.semesterId}" />
+                        <button type="submit">Edit</button>
+                    </form>
                 </td>
             </tr>
         </tbody>
