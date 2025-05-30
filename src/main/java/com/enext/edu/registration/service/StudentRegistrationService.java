@@ -20,13 +20,10 @@ public class StudentRegistrationService {
     private final List<StudentRegistration> all = List.of(
         new StudentRegistration(1L, 101L, 2023L, LocalDate.of(2023, 8, 15)),
         new StudentRegistration(2L, 102L, 2023L, LocalDate.of(2023, 8, 16)),
-        new StudentRegistration(3L, 101L, 2024L,LocalDate.of(2024, 12, 1)),
+        new StudentRegistration(3L, 101L, 2024L, LocalDate.of(2024, 12, 1)),
         new StudentRegistration(4L, 103L, 2023L, LocalDate.of(2023, 8, 17)),
-        new StudentRegistration(5L,101L, 2025L,LocalDate.of(2025, 8, 15)),
-        new StudentRegistration(6L,101L, 2022L, LocalDate.of(2022, 8, 15)),
-        new StudentRegistration(7L,102L,2021L, LocalDate.of(2021, 12, 2)),
-        new StudentRegistration(8L, 102L,2025L,LocalDate.of(2025, 1, 10))
-
+        new StudentRegistration(5L, 101L, 2025L, null), // pending registration
+        new StudentRegistration(6L, 101L, 2022L, LocalDate.of(2022, 8, 15))
     );
 
     /** Returns *all* registrations (unchanged) */
@@ -36,21 +33,16 @@ public class StudentRegistrationService {
 
     /** Returns only registrations for the given studentId */
     public List<StudentRegistration> getRegistrationsByStudentId(Long studentId) {
-        List<StudentRegistration> result = new ArrayList<>();
-
-        for (StudentRegistration reg : all) {
-            if (reg.getStudentId().equals(studentId)) {
-                result.add(reg);
-            }
-        }
-
-        return result;
-    } 
+        return all.stream()
+                .filter(reg -> reg.getStudentId().equals(studentId))
+                .collect(Collectors.toList());
+    }
     
     public boolean isAlreadyRegistered(Long studentId, Long semesterId) {
-    return all.stream()
-              .anyMatch(reg -> reg.getStudentId().equals(studentId)
-                            && reg.getSemesterId().equals(semesterId));
+        return all.stream()
+                .anyMatch(reg -> reg.getStudentId().equals(studentId)
+                                && reg.getSemesterId().equals(semesterId)
+                                && reg.getRegistrationDate() != null);
     }
 
     public Student getStudentById(Long id) {
@@ -62,7 +54,10 @@ public class StudentRegistrationService {
     }
 
     public StudentRegistration getRegistrationForStudentAndSemester(Long studentId, Long semesterId) {
-        return new StudentRegistration(999L, studentId, semesterId, LocalDate.now());
+        return all.stream()
+                .filter(reg -> reg.getStudentId().equals(studentId) && reg.getSemesterId().equals(semesterId))
+                .findFirst()
+                .orElse(null);
     }
 
     public Program getProgramForStudent(Long studentId) {

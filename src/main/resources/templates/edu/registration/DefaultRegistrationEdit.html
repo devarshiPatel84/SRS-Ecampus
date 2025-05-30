@@ -2,213 +2,262 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Registration Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            background-image: url('/login_38.gif');
+            background-repeat: repeat-y;
+            background-position: left top;
+            background-attachment: fixed;
+            background-color: white;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 20px;
+            height: 100%;
+            background-image: url('/login_38.gif');
+            background-repeat: repeat-y;
+            background-position: right top;
+            background-attachment: fixed;
+            z-index: -1;
+        }
+
+        .top-bar {
+            background-color: #003366;
+            padding: 10px;
+            color: white;
+        }
+
+        .sidemenu {
+            background-image: url('/login_38.gif');
+            background-repeat: repeat-y;
+            width: 15px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #333;
+            text-align: center;
+            padding: 10px;
+            border-top: 1px solid #6699cc;
+        }
+
+        .table-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2, h3 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Registration Form</h2>
+<table style="width:100%;">
+    <tr>
+        <td colspan="3" class="top-bar">
+            <span style="font-size: 24px; font-weight: bold;">DA-IICT</span>
+            <span style="font-size: 16px;">&nbsp;Dhirubhai Ambani Institute of Information & Communication Technology</span>
+        </td>
+    </tr>
 
-    <!-- Header Info -->
-    <table border="1">
-        <tr>
-            <td><strong>Name</strong></td>
-            <td th:text="${studentbean.name}">Student Name</td>
-            <td><strong>Program</strong></td>
-            <td th:text="${programBean.name}">Program</td>
-        </tr>
-        <tr>
-            <td><strong>Student ID</strong></td>
-            <td th:text="${studentbean.id}">ID</td>
-            <td><strong>Batch</strong></td>
-            <td>2022</td>
-        </tr>
-        <tr>
-            <td><strong>Semester</strong></td>
-            <td th:text="${semesterBean.name}">Semester</td>
-            <td><strong>Date</strong></td>
-            <td th:if="${alreadyRegistered}"
-                th:text="${#temporals.format(stdregbean.registrationDate, 'dd-MMM-yyyy')}">Date</td>
-            <td th:unless="${alreadyRegistered}"
-                th:text="${#temporals.format(T(java.time.LocalDate).now(), 'dd-MMM-yyyy')}">Today</td>
-        </tr>
-    </table>
+    <tr>
+        <td class="sidemenu"></td>
+        <td class="content">
+            <div class="table-container">
+                <h2>Registration Form</h2>
 
-    <!-- Registered View -->
-    <div th:if="${alreadyRegistered}">
-            <!-- Courses Registered -->
-    <h3>Courses Registered for Semester VI</h3>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Semester</th>
-                <th>Title</th>
-                <th>Code</th>
-                <th>Credits</th>
-                <th>Register</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Semester VI</td>
-                <td>Computational Finance</td>
-                <td>CS408</td>
-                <td>3.00</td>
-                <td>ACTIVE</td>
-            </tr>
-            <!-- Add more rows dynamically if needed -->
-        </tbody>
-    </table>
-
-    <!-- Other Courses -->
-    <h3>Other Courses</h3>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Sr. No.</th>
-                <th>Course Available</th>
-                <th>Register</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>1</td><td></td><td></td></tr>
-            <tr><td>2</td><td></td><td></td></tr>
-            <tr><td>3</td><td></td><td></td></tr>
-            <tr><td>4</td><td></td><td></td></tr>
-        </tbody>
-    </table>
-
-    <!-- Grade Improvement Courses -->
-    <h3>Courses for Grade Improvement</h3>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Sr. No.</th>
-                <th>Course Available</th>
-                <th>Register</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>1</td><td></td><td></td></tr>
-            <tr><td>2</td><td></td><td></td></tr>
-        </tbody>
-    </table>
-
-    <!-- Backlog Courses -->
-    <h3>Backlog Courses</h3>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Sr. No.</th>
-                <th>Course Available</th>
-                <th>Register</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>1</td><td></td><td></td></tr>
-            <tr><td>2</td><td></td><td></td></tr>
-        </tbody>
-    </table>
-
-    <!-- Audit Courses -->
-    <h3>Audit Courses</h3>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Sr. No.</th>
-                <th>Audit Course</th>
-                <th>Register</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>1</td><td></td><td></td></tr>
-            <tr><td>2</td><td></td><td></td></tr>
-        </tbody>
-    </table>
-
-    <!-- Back Button -->
-    <form th:action="@{/studentRegistrations}" method="get">
-        <input type="hidden" name="stdid" th:value="${studentbean.id}" />
-        <button type="submit">Back</button>
-    </form>
-
-    <!-- Workflow Section -->
-    <h3>Work Flow</h3>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Responder</th>
-                <th>Response</th>
-                <th>Date</th>
-                <th>Remark</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Santosh Pandit</td>
-                <td>Fee Paid</td>
-                <td>20-Jan-2025 10:23</td>
-                <td>Approved</td>
-            </tr>
-            <tr>
-                <td>Registrar</td>
-                <td>Approved</td>
-                <td>20-Jan-2025 09:46</td>
-                <td>Approved</td>
-            </tr>
-            <tr>
-                <td>UG Convenor</td>
-                <td>Approved by Faculty</td>
-                <td>20-Dec-2024 18:06</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td th:text="${studentbean.name}">DEVARSHI PRAVINKUMAR PATEL</td>
-                <td>Submitted</td>
-                <td>20-Dec-2024 18:06</td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
-    </div>
-
-    <!-- New Registration View -->
-    <div th:unless="${alreadyRegistered}">
-        <h3>Select Courses</h3>
-        <form action="#" method="post">
-            <table border="1">
-                <thead>
-                    <tr><th>Sr. No.</th><th>Course</th><th>Register</th></tr>
-                </thead>
-                <tbody>
-                    <tr th:each="course, stat : ${availableCourses}">
-                        <td th:text="${stat.count}">1</td>
-                        <td>
-                            <select th:name="'course' + ${stat.index}">
-                                <option value="">Select</option>
-                                <option th:value="${course}" th:text="${course}"></option>
-                            </select>
-                        </td>
-                        <td><input type="checkbox" th:name="'register' + ${stat.index}" /></td>
+                <!-- Header Info -->
+                <table class="table table-bordered">
+                    <tr>
+                        <td><strong>Name</strong></td>
+                        <td th:text="${studentbean.name}">Student Name</td>
+                        <td><strong>Program</strong></td>
+                        <td th:text="${programBean.name}">Program</td>
                     </tr>
-                </tbody>
-            </table>
+                    <tr>
+                        <td><strong>Student ID</strong></td>
+                        <td th:text="${studentbean.id}">ID</td>
+                        <td><strong>Batch</strong></td>
+                        <td>2022</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Semester</strong></td>
+                        <td th:text="${semesterBean.name}">Semester</td>
+                        <td><strong>Date</strong></td>
+                        <td th:if="${alreadyRegistered}"
+                            th:text="${#temporals.format(stdregbean.registrationDate, 'dd-MMM-yyyy')}">Date</td>
+                        <td th:unless="${alreadyRegistered}"
+                            th:text="${#temporals.format(T(java.time.LocalDate).now(), 'dd-MMM-yyyy')}">Today</td>
+                    </tr>
+                </table>
 
-            <!-- Remarks + Submit -->
-            <h3>Remarks</h3>
-            <textarea name="remarks" rows="3" cols="60"></textarea>
-            <br/>
-            <label for="authority">Select Course Authority:</label>
-            <select name="authority">
-                <option value="UG Convenor">UG Convenor</option>
-                <option value="Registrar">Registrar</option>
-            </select>
-            <br/><br/>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+                <!-- Registered View -->
+                <div th:if="${alreadyRegistered}">
+                    <h3>Courses Registered</h3>
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Semester</th>
+                                <th>Title</th>
+                                <th>Code</th>
+                                <th>Credits</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Semester VI</td>
+                                <td>Computational Finance</td>
+                                <td>CS408</td>
+                                <td>3.00</td>
+                                <td>ACTIVE</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-    <!-- Back Button -->
-    <form th:action="@{/studentRegistrations}" method="get">
-        <input type="hidden" name="stdid" th:value="${studentbean.id}" />
-        <button type="submit">Back</button>
-    </form>
+                    <h3>Other Courses</h3>
+                    <table class="table table-bordered">
+                        <thead><tr><th>Sr. No.</th><th>Course Available</th><th>Register</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td></td><td></td></tr>
+                            <tr><td>2</td><td></td><td></td></tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Grade Improvement Courses</h3>
+                    <table class="table table-bordered">
+                        <thead><tr><th>Sr. No.</th><th>Course</th><th>Register</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td></td><td></td></tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Backlog Courses</h3>
+                    <table class="table table-bordered">
+                        <thead><tr><th>Sr. No.</th><th>Course</th><th>Register</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td></td><td></td></tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Audit Courses</h3>
+                    <table class="table table-bordered">
+                        <thead><tr><th>Sr. No.</th><th>Audit Course</th><th>Register</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td></td><td></td></tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Back Button -->
+                    <form th:action="@{/studentRegistrations}" method="get" class="mt-3 text-center">
+                        <input type="hidden" name="stdid" th:value="${studentbean.id}" />
+                        <button type="submit" class="btn btn-secondary">Back</button>
+                    </form>
+
+                    <h3>Work Flow</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Responder</th>
+                                <th>Response</th>
+                                <th>Date</th>
+                                <th>Remark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Santosh Pandit</td>
+                                <td>Fee Paid</td>
+                                <td>20-Jan-2025 10:23</td>
+                                <td>Approved</td>
+                            </tr>
+                            <tr>
+                                <td>Registrar</td>
+                                <td>Approved</td>
+                                <td>20-Jan-2025 09:46</td>
+                                <td>Approved</td>
+                            </tr>
+                            <tr>
+                                <td>UG Convenor</td>
+                                <td>Approved by Faculty</td>
+                                <td>20-Dec-2024 18:06</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td th:text="${studentbean.name}">Student Name</td>
+                                <td>Submitted</td>
+                                <td>20-Dec-2024 18:06</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- New Registration View -->
+                <div th:unless="${alreadyRegistered}">
+                    <h3>Select Courses</h3>
+                    <form method="post">
+                        <table class="table table-bordered">
+                            <thead><tr><th>Sr. No.</th><th>Course</th><th>Register</th></tr></thead>
+                            <tbody>
+                                <tr th:each="course, stat : ${availableCourses}">
+                                    <td th:text="${stat.count}">1</td>
+                                    <td>
+                                        <select th:name="'course' + ${stat.index}" class="form-select">
+                                            <option value="">Select</option>
+                                            <option th:value="${course}" th:text="${course}"></option>
+                                        </select>
+                                    </td>
+                                    <td><input type="checkbox" class="form-check-input" th:name="'register' + ${stat.index}" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="mb-3">
+                            <label class="form-label">Remarks</label>
+                            <textarea name="remarks" class="form-control" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Select Course Authority:</label>
+                            <select name="authority" class="form-select">
+                                <option value="UG Convenor">UG Convenor</option>
+                                <option value="Registrar">Registrar</option>
+                            </select>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </td>
+        <td class="sidemenu"></td>
+    </tr>
+
+    <tr>
+        <td class="sidemenu"></td>
+        <td class="footer" colspan="1">
+            &copy; 2002 DA-IICT, Near Indroda Circle, Ahmedabad-Gandhinagar Highway, Gandhinagar - 382 009, Gujarat, India.<br>
+            Designed, developed and maintained by <a href="http://www.exchangenext.com" target="_blank">Internet ExchangeNext.com Ltd.</a>
+        </td>
+        <td class="sidemenu"></td>
+    </tr>
+</table>
 </body>
 </html>

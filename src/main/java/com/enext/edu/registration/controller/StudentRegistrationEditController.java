@@ -18,41 +18,38 @@ public class StudentRegistrationEditController {
     private StudentRegistrationService registrationService;
 
     @GetMapping("/studentRegistrationEdit")
-public String editStudentRegistration(
-    @RequestParam(name = "stdid") Long studentId,
-    @RequestParam(name = "SemesterID") Long semesterId,
-    Model model) {
+    public String editStudentRegistration(
+        @RequestParam(name = "stdid") Long studentId,
+        @RequestParam(name = "SemesterID") Long semesterId,
+        Model model) {
 
-    // Mocked service methods
-    Student student = registrationService.getStudentById(studentId);
-    Semester semester = registrationService.getSemesterById(semesterId);
-    Program program = registrationService.getProgramForStudent(studentId);
-    Term term = registrationService.getTermForSemester(semesterId);
+        // Mocked service methods
+        Student student = registrationService.getStudentById(studentId);
+        Semester semester = registrationService.getSemesterById(semesterId);
+        Program program = registrationService.getProgramForStudent(studentId);
+        Term term = registrationService.getTermForSemester(semesterId);
 
-    boolean alreadyRegistered = registrationService.isAlreadyRegistered(studentId, semesterId);
-    model.addAttribute("studentbean", student);
-    model.addAttribute("semesterBean", semester);
-    model.addAttribute("programBean", program);
-    model.addAttribute("termBean", term);
-    model.addAttribute("alreadyRegistered", alreadyRegistered);
+        StudentRegistration registration = registrationService.getRegistrationForStudentAndSemester(studentId, semesterId);
+        boolean alreadyRegistered = (registration != null && registration.getRegistrationDate() != null);
 
-    if (alreadyRegistered) {
-        StudentRegistration reg = registrationService
-            .getRegistrationsByStudentId(studentId)
-            .stream()
-            .filter(r -> r.getSemesterId().equals(semesterId))
-            .findFirst().orElse(null);
-        model.addAttribute("stdregbean", reg);
-    } else {
-        // Provide available courses list for dropdowns
-        List<String> availableCourses = List.of(
-            "Computational Finance",
-            "Environmental Science",
-            "High Performance Computing",
-            "Modeling and Simulation"
-        );
-        model.addAttribute("availableCourses", availableCourses);
-    }
-    return RegistrationConstants.JSPSTUDENTREGISTRATIONEDIT; // resolves to templates/edu/registration/DefaultRegistrationEdit.html
+        model.addAttribute("studentbean", student);
+        model.addAttribute("semesterBean", semester);
+        model.addAttribute("programBean", program);
+        model.addAttribute("termBean", term);
+        model.addAttribute("alreadyRegistered", alreadyRegistered);
+
+        if (alreadyRegistered) {
+            model.addAttribute("stdregbean", registration);
+        } else {
+            List<String> availableCourses = List.of(
+                "Computational Finance",
+                "Environmental Science",
+                "High Performance Computing",
+                "Modeling and Simulation"
+            );
+            model.addAttribute("availableCourses", availableCourses);
+        }
+
+        return RegistrationConstants.JSPSTUDENTREGISTRATIONEDIT; // resolves to templates/edu/registration/DefaultRegistrationEdit.html
     }
 }
