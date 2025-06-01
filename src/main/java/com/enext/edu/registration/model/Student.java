@@ -1,15 +1,47 @@
 package com.enext.edu.registration.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "STUDENTS")
 public class Student {
+
+    @Id
+    @Column(name = "STDID")
     private Long id;
+
+    @Column(name = "STDBCHID")
+    private Integer batchId;
+
+    @Column(name = "STDNAME")
     private String name;
 
-    public Student(Long id, String name) {
+    @Column(name = "STDPROGRAMNAME")
+    private String programName;
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
         this.id = id;
-        this.name = name;
+    }
+    public Integer getBatchId() {
+        return batchId;
+    }
+    public void setBatchId(Integer batchId) {
+        this.batchId = batchId;
+    }
+    public String getName() {
+        return name;
     }
 
-    // Getters
-    public Long getId() { return id; }
-    public String getName() { return name; }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getProgramName() {
+        return programName;
+    }
+    public void setProgramName(String programName) {
+        this.programName = programName;
+    }
 }

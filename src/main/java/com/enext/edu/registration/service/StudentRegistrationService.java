@@ -1,70 +1,77 @@
+// package com.enext.edu.registration.service;
+
+// import com.enext.edu.registration.model.StudentRegistration;
+// import com.enext.edu.registration.repository.StudentRegistrationRepository;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Service;
+
+// import java.util.List;
+
+// @Service
+// public class StudentRegistrationService {
+
+//     @Autowired
+//     private StudentRegistrationRepository repository;
+
+//     public List<StudentRegistration> getRegistrationsByStudentId(Long studentId) {
+//         return repository.findByStudentId(studentId);
+//     }
+
+//     public boolean isAlreadyRegistered(Long studentId, Long semesterId) {
+//         return repository.findByStudentId(studentId).stream()
+//                 .anyMatch(reg -> reg.getSemesterId().equals(semesterId));
+//     }
+
+//     public StudentRegistration getRegistrationForStudentAndSemester(Long studentId, Long semesterId) {
+//         return repository.findByStudentId(studentId).stream()
+//                 .filter(reg -> reg.getSemesterId().equals(semesterId))
+//                 .findFirst()
+//                 .orElse(null);
+//     }
+// }
+
 package com.enext.edu.registration.service;
-
-import com.enext.edu.registration.model.StudentRegistration;
-import com.enext.edu.registration.model.Student;
-import com.enext.edu.registration.model.Semester;
-import com.enext.edu.registration.model.Program;
-import com.enext.edu.registration.model.Term;
-import java.util.Date;
+import com.enext.edu.registration.model.*;
+import com.enext.edu.registration.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentRegistrationService {
-
-    // your “database”
-    private final List<StudentRegistration> all = List.of(
-        new StudentRegistration(1L, 101L, 2023L, LocalDate.of(2023, 8, 15)),
-        new StudentRegistration(2L, 102L, 2023L, LocalDate.of(2023, 8, 16)),
-        new StudentRegistration(3L, 101L, 2024L, LocalDate.of(2024, 12, 1)),
-        new StudentRegistration(4L, 103L, 2023L, LocalDate.of(2023, 8, 17)),
-        new StudentRegistration(5L, 101L, 2025L, null), // pending registration
-        new StudentRegistration(6L, 101L, 2022L, LocalDate.of(2022, 8, 15))
-    );
-
-    /** Returns *all* registrations (unchanged) */
-    public List<StudentRegistration> getAllRegistrations() {
-        return all;
-    }
-
-    /** Returns only registrations for the given studentId */
-    public List<StudentRegistration> getRegistrationsByStudentId(Long studentId) {
-        return all.stream()
-                .filter(reg -> reg.getStudentId().equals(studentId))
-                .collect(Collectors.toList());
-    }
-    
-    public boolean isAlreadyRegistered(Long studentId, Long semesterId) {
-        return all.stream()
-                .anyMatch(reg -> reg.getStudentId().equals(studentId)
-                                && reg.getSemesterId().equals(semesterId)
-                                && reg.getRegistrationDate() != null);
-    }
+    @Autowired private StudentRepository studentRepo;
+    @Autowired private SemesterRepository semesterRepo;
+    @Autowired private StudentRegistrationRepository registrationRepo;
+    @Autowired private StudentRegistrationCourseRepository courseRepo;
+    @Autowired private CourseBySemesterRepository availableRepo;
 
     public Student getStudentById(Long id) {
-        return new Student(id, "John Doe");
+        return studentRepo.findById(id).orElse(null);
     }
 
     public Semester getSemesterById(Long id) {
-        return new Semester(id, "Spring 2025");
+        return semesterRepo.findById(id).orElse(null);
     }
 
-    public StudentRegistration getRegistrationForStudentAndSemester(Long studentId, Long semesterId) {
-        return all.stream()
-                .filter(reg -> reg.getStudentId().equals(studentId) && reg.getSemesterId().equals(semesterId))
-                .findFirst()
-                .orElse(null);
+    public boolean isAlreadyRegistered(Long studentId, Long semesterId) {
+        StudentRegistration reg = registrationRepo.findByStudentIdAndSemesterId(studentId, semesterId);
+        return reg != null && reg.getRegistrationDate() != null;
     }
 
-    public Program getProgramForStudent(Long studentId) {
-        return new Program(101L, "B.Tech CSE");
+    public List<StudentRegistration> getRegistrationsByStudentId(Long studentId) {
+         return registrationRepo.findByStudentId(studentId);
     }
 
-    public Term getTermForSemester(Long semesterId) {
-        return new Term(202L, "Term 1");
+    public StudentRegistration getRegistration(Long studentId, Long semesterId) {
+        return registrationRepo.findByStudentIdAndSemesterId(studentId, semesterId);
     }
+
+    public List<StudentRegistrationCourse> getRegisteredCourses(Long registrationId) {
+        return courseRepo.findByRegistrationId(registrationId);
+    }
+
+    public List<CourseBySemester> getAvailableCourses(Long semesterId) {
+    return availableRepo.findBySemesterId(semesterId);
+    }
+
 }

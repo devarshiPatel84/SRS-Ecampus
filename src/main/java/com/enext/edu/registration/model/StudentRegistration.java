@@ -1,19 +1,26 @@
 package com.enext.edu.registration.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "STUDENTREGISTRATIONS")
 public class StudentRegistration {
+
+    @Id
+    @Column(name = "SRGID")
     private Long id;
+
+    @Column(name = "SRGSTDID")
     private Long studentId;
+
+    @Column(name = "SRGSTRID")
     private Long semesterId;
+
+    @Column(name = "SRGREGDATE")
     private LocalDate registrationDate;
 
-    public StudentRegistration(Long id, Long studentId, Long semesterId, LocalDate registrationDate) {
-        this.id = id;
-        this.studentId = studentId;
-        this.semesterId = semesterId;
-        this.registrationDate = registrationDate;
-    }
+    // Getters & Setters
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
