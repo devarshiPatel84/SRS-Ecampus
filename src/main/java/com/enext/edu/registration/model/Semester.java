@@ -1,14 +1,28 @@
 package com.enext.edu.registration.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "SEMESTERS")
 public class Semester {
+
+    @Id
+    @Column(name = "STRID")
     private Long id;
+
+    @Column(name = "STRNAME")
     private String name;
 
-    public Semester(Long id, String name) {
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
         this.id = id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
         this.name = name;
     }
-
-    public Long getId() { return id; }
-    public String getName() { return name; }
 }

@@ -19,9 +19,13 @@
             <tr th:each="reg, it : ${StudentRegistrations}">
                 <td th:text="${it.count}">1</td>
                 <td th:text="${reg.semesterId}">Semester</td>
-                <td th:text="${reg.registrationDate}">Date</td>
+                <td th:text="${#temporals.format(reg.registrationDate, 'yyyy-MM-dd')}">Date</td>
                 <td>
-                    <button type="button">Edit</button>
+                    <form th:action="@{/studentRegistrationEdit}" method="get">
+                        <input type="hidden" name="stdid" th:value="${reg.studentId}" />
+                        <input type="hidden" name="SemesterID" th:value="${reg.semesterId}" />
+                        <button type="submit">Edit</button>
+                    </form>
                 </td>
             </tr>
         </tbody>
@@ -151,7 +155,7 @@
         <td class="sidemenu"></td>
         <td class="footer" colspan="1">
             &copy; 2002 DA-IICT, Near Indroda Circle, Ahmedabad-Gandhinagar Highway, Gandhinagar - 382 009, Gujarat, India.<br>
-            Designed, developed and maintained by <a href="http://www.exchangenext.com" target="_blank">Internet ExchangeNext.com Ltd.</a>
+            Designed, developed and maintained by Devarshi Patel and Rit Trambadia
         </td>
         <td class="sidemenu"></td>
     </tr>
