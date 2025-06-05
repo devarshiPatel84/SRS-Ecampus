@@ -7,11 +7,12 @@ import jakarta.persistence.*;
 public class StudentRegistrationCourse {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SRCID")
-    private Long id;
+    private Integer id;
 
     @Column(name = "SRCSRGID")
-    private Long registrationId;
+    private Integer registrationId;
 
     @Column(name = "SRCCRSCODE")
     private String courseCode;
@@ -25,16 +26,16 @@ public class StudentRegistrationCourse {
     @Column(name = "SRCCRSSTATUS")
     private String status;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
-    public Long getRegistrationId() {
+    public Integer getRegistrationId() {
         return registrationId;
     }
-    public void setRegistrationId(Long registrationId) {
+    public void setRegistrationId(Integer registrationId) {
         this.registrationId = registrationId;
     }
     public String getCourseCode() {

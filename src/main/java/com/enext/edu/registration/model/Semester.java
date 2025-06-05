@@ -8,15 +8,15 @@ public class Semester {
 
     @Id
     @Column(name = "STRID")
-    private Long id;
+    private Integer id;
 
     @Column(name = "STRNAME")
     private String name;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getName() {

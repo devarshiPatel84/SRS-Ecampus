@@ -9,6 +9,6 @@ public class RegistrationConstants {
     public static final String ATTRIBUTESTUDENTBEAN = "studentbean";
     public static final String ATTRIBUTESTUDENTREGISTRATIONBEAN = "stdregbean";
     public static final String JSPSTUDENTREGISTRATIONEDIT = "edu/registration/DefaultRegistrationEdit";
+    public static final String JSPSTUDENTREGISTRATIONVIEW = "edu/registration/DefaultRegistrationView";
+    public static final String JSPSTUDENTREGISTRATIONSAVE = "edu/registration/DefaultRegistrationSave";
 }
-
-

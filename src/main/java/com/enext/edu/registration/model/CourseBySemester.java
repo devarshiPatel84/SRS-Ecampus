@@ -7,14 +7,11 @@ import jakarta.persistence.*;
 public class CourseBySemester {
 
     @Id
-    @Column(name = "CRSBSTRID")
-    private Long id;
+    @Column(name = "CRSBSTRCRSID")
+    private Integer courseId;
 
     @Column(name = "CRSBSEMID")
-    private Long semesterId;
-
-    @Column(name = "CRSBSTRCRSID")
-    private Long courseId;
+    private Integer semesterId;
 
     @Column(name = "CRSBSTRCRSCODE")
     private String courseCode;
@@ -25,14 +22,11 @@ public class CourseBySemester {
     @Column(name = "CRSBSTRCRSCREDIT")
     private Double credits;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Integer getSemesterId() { return semesterId; }
+    public void setSemesterId(Integer semesterId) { this.semesterId = semesterId; }
 
-    public Long getSemesterId() { return semesterId; }
-    public void setSemesterId(Long semesterId) { this.semesterId = semesterId; }
-
-    public Long getCourseId() { return courseId; }
-    public void setCourseId(Long courseId) { this.courseId = courseId; }
+    public Integer getCourseId() { return courseId; }
+    public void setCourseId(Integer courseId) { this.courseId = courseId; }
 
     public String getCourseCode() { return courseCode; }
     public void setCourseCode(String courseCode) { this.courseCode = courseCode; }

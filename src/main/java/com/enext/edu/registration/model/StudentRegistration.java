@@ -9,27 +9,27 @@ public class StudentRegistration {
 
     @Id
     @Column(name = "SRGID")
-    private Long id;
+    private Integer id;
 
     @Column(name = "SRGSTDID")
-    private Long studentId;
+    private Integer studentId;
 
     @Column(name = "SRGSTRID")
-    private Long semesterId;
+    private Integer semesterId;
 
     @Column(name = "SRGREGDATE")
     private LocalDate registrationDate;
 
     // Getters & Setters
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
-    public Long getStudentId() { return studentId; }
-    public void setStudentId(Long studentId) { this.studentId = studentId; }
+    public Integer getStudentId() { return studentId; }
+    public void setStudentId(Integer studentId) { this.studentId = studentId; }
 
-    public Long getSemesterId() { return semesterId; }
-    public void setSemesterId(Long semesterId) { this.semesterId = semesterId; }
+    public Integer getSemesterId() { return semesterId; }
+    public void setSemesterId(Integer semesterId) { this.semesterId = semesterId; }
 
     public LocalDate getRegistrationDate() { return registrationDate; }
     public void setRegistrationDate(LocalDate registrationDate) { this.registrationDate = registrationDate; }

@@ -8,7 +8,7 @@ public class Student {
 
     @Id
     @Column(name = "STDID")
-    private Long id;
+    private Integer id;
 
     @Column(name = "STDBCHID")
     private Integer batchId;
@@ -19,10 +19,10 @@ public class Student {
     @Column(name = "STDPROGRAMNAME")
     private String programName;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public Integer getBatchId() {
