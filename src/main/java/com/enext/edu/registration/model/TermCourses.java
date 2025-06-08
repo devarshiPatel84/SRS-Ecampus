@@ -9,13 +9,13 @@ public class TermCourses {
 
     @Id
     @Column(name = "tcrid")
-    private Integer tcrid;
+    private Long tcrid;
 
     @Column(name = "tcrtrmid")
-    private Short tcrtrmid;
+    private Long tcrtrmid;
 
     @Column(name = "tcrcrsid")
-    private Short tcrcrsid;
+    private Long tcrcrsid;
 
     @Column(name = "tcrtype")
     private String tcrtype;
@@ -48,17 +48,17 @@ public class TermCourses {
     private LocalDateTime tcrlastupdatedat;
 
     @Column(name = "tcrrowstate")
-    private Short tcrrowstate;
+    private Integer tcrrowstate;
 
 
-    public Integer getTcrid() { return tcrid; }
-    public void setTcrid(Integer tcrid) { this.tcrid = tcrid; }
+    public Long getTcrid() { return tcrid; }
+    public void setTcrid(Long tcrid) { this.tcrid = tcrid; }
 
-    public Short getTcrtrmid() { return tcrtrmid; }
-    public void setTcrtrmid(Short tcrtrmid) { this.tcrtrmid = tcrtrmid; }
+    public Long getTcrtrmid() { return tcrtrmid; }
+    public void setTcrtrmid(Long tcrtrmid) { this.tcrtrmid = tcrtrmid; }
 
-    public Short getTcrcrsid() { return tcrcrsid; }
-    public void setTcrcrsid(Short tcrcrsid) { this.tcrcrsid = tcrcrsid; }
+    public Long getTcrcrsid() { return tcrcrsid; }
+    public void setTcrcrsid(Long tcrcrsid) { this.tcrcrsid = tcrcrsid; }
 
     public String getTcrtype() { return tcrtype; }
     public void setTcrtype(String tcrtype) { this.tcrtype = tcrtype; }
@@ -90,7 +90,7 @@ public class TermCourses {
     public LocalDateTime getTcrlastupdatedat() { return tcrlastupdatedat; }
     public void setTcrlastupdatedat(LocalDateTime tcrlastupdatedat) { this.tcrlastupdatedat = tcrlastupdatedat; }
 
-    public Short getTcrrowstate() { return tcrrowstate; }
-    public void setTcrrowstate(Short tcrrowstate) { this.tcrrowstate = tcrrowstate; }
+    public Integer getTcrrowstate() { return tcrrowstate; }
+    public void setTcrrowstate(Integer tcrrowstate) { this.tcrrowstate = tcrrowstate; }
 
 }

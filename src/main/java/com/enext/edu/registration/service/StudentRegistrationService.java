@@ -11,7 +11,7 @@ public class StudentRegistrationService {
     @Autowired 
     private StudentsRepository studentRepo;
     
-    @Autowired 
+    @Autowired
     private SemestersRepository semesterRepo;
     
     @Autowired 
@@ -26,7 +26,7 @@ public class StudentRegistrationService {
     public List<Semesters> getSemesterById(Short id) {
         return semesterRepo.findActiveSemestersByBranchId(id);
     }
-
+    
 
     public List<StudentRegistrations> getRegistrationsByStudentId(Long studentId) {
          return registrationRepo.findregisteredsemesters(studentId);

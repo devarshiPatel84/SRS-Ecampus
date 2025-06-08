@@ -2,6 +2,7 @@ package com.enext.edu.registration.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "studentregistrationcourses", schema="ec2")

@@ -85,21 +85,21 @@
                 <table class="table table-bordered">
                     <tr>
                         <td><strong>Name</strong></td>
-                        <td th:text="${studentbean.name}">Student Name</td>
+                        <td th:text="${studentbean.stdfirstname}">Student Name</td>
                         <td><strong>Program</strong></td>
-                        <td th:text="${studentbean.programName}">Program</td>
+                        <td th:text="${programbean.prgname}">Program</td>
                     </tr>
                     <tr>
                         <td><strong>Student ID</strong></td>
-                        <td th:text="${studentbean.id}">ID</td>
+                        <td th:text="${studentbean.stdinstid}">ID</td>
                         <td><strong>Batch</strong></td>
-                        <td th:text="${studentbean.batchId}">Batch</td>
+                        <td th:text="${batchbean.bchname}">Batch</td>
                     </tr>
                     <tr>
                         <td><strong>Semester</strong></td>
-                        <td th:text="${semesterbean.name}">Semester</td>
+                        <td th:text="${semesterbean.strname}">Semester</td>
                         <td><strong>Date</strong></td>
-                        <td th:text="${stdregbean.registrationDate}">Today</td>
+                        <td th:text="${studentRegistrationbean.srgregdate}">Today</td>
                     </tr>
                 </table>
 
@@ -115,12 +115,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="course : ${registeredCourses}">
-                            <td th:text="${semesterbean.name}">Semester Name</td>
-                            <td th:text="${course.courseName}">Course Title</td>
-                            <td th:text="${course.courseCode}">Course Code</td>
-                            <td th:text="${course.credits}">Course Credits</td>
-                            <td th:text="${course.status}">Course Status</td>
+                        <tr th:each="course : ${courses}">
+                            <td th:text="${semesterbean.strname}">Semester Name</td>
+                            <td th:text="${course.crsname}">Course Title</td>
+                            <td th:text="${course.crscode}">Course Code</td>
+                            <td th:text="${course.crscreditpoints}">Course Credits</td>
+                            <td th:text="Active">Course Status</td>
                         </tr>
                     </tbody>
                 </table>
@@ -160,7 +160,7 @@
 
                 <!-- Back Button -->
                 <form th:action="@{/studentRegistrations}" method="get" class="mt-3 text-center">
-                    <input type="hidden" name="stdid" th:value="${studentbean.id}" />
+                    <input type="hidden" name="stdid" th:value="${studentbean.stdid}" />
                     <button type="submit" class="btn btn-secondary">Back</button>
                 </form>
 
