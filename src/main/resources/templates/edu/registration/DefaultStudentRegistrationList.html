@@ -118,7 +118,7 @@
             <div class="table-container">
                 <h2 class="text-center mb-4">Registrations</h2>
 
-                <div th:if="${StudentRegistrations.empty}">
+                <div th:if="${semestersbean.empty}">
                     <p class="text-danger text-center">No registrations found for this student.</p>
                 </div>
 
@@ -132,14 +132,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="reg, it : ${StudentRegistrations}">
+                        <tr th:each="reg, it : ${semestersbean}">
                             <td th:text="${it.count}">1</td>
-                            <td th:text="${reg.semesterId}">Semester</td>
-                            <td th:text="${#temporals.format(reg.registrationDate, 'yyyy-MM-dd')}">Date</td>
+                            <td th:text="${reg.strname}">Semester</td>
+                            <td th:text="${#temporals.format(StudentRegistrations[reg.strid]?.srgregdate, 'yyyy-MM-dd')}">Date</td>
                             <td>
                                 <form th:action="@{/studentRegistrationEdit}" method="get" class="form-inline">
-                                    <input type="hidden" name="stdid" th:value="${reg.studentId}" />
-                                    <input type="hidden" name="SemesterID" th:value="${reg.semesterId}" />
+                                    <input type="hidden" name="stdid" th:value="${studentbean.stdid}" />
+                                    <input type="hidden" name="strid" th:value="${reg.strid}" />
                                     <button type="submit" class="btn btn-sm btn-outline-primary">Edit</button>
                                 </form>
                             </td>

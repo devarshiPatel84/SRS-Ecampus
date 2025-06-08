@@ -1,0 +1,16 @@
+package com.enext.edu.registration.repository;
+
+import com.enext.edu.registration.model.Semesters;
+
+import java.util.*;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface SemestersRepository extends JpaRepository<Semesters, Short> {
+    @Query(value = "SELECT * FROM ec2.SEMESTERS sm WHERE sm.STRROWSTATE > 0 AND sm.STRBCHID = :branchId ORDER BY sm.STRSEQNO", nativeQuery = true)
+    List<Semesters> findActiveSemestersByBranchId(@Param("branchId") Short branchId);
+}
