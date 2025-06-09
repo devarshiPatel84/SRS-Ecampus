@@ -32,6 +32,12 @@ public class StudentRegistrationEditService {
 
     @Autowired
     private CoursesRepository crsRepo;
+
+    @Autowired
+    private SemesterCoursesRepository semesterCoursesRepo;
+
+    @Autowired
+    private CourseGroupsRepository courseGroupsRepo;
     
     public Semesters getSemesterBystrId(Short id) {
         return semesterRepo.findById(id).orElse(null);
@@ -63,6 +69,46 @@ public class StudentRegistrationEditService {
 
     public Courses getCourseById(Long id) {
         return crsRepo.getbycrsid(id);
+    }
+
+    public List<SemesterCourses> getCompulsoryCoursesBySemesterId(Short semesterId) {
+        return semesterCoursesRepo.getccbysemid(semesterId);
+    }
+
+    public List<CourseGroups> getElectiveCoursesBySemesterId(Short semesterId) {
+        return courseGroupsRepo.getecbysemid(semesterId);
+    }
+
+    public List<Courses> getCourseByCgpId(Short cgpId, Short prgId, Short trmId) {
+        return crsRepo.getbycgpId(cgpId, prgId, trmId);
+    }
+
+    public List<SemesterCourses> getBacklogCompulsoryCourses(Long studentId, Short semesterId, Short batchId) {
+        return semesterCoursesRepo.getBCCourses(studentId, semesterId, batchId);
+    }
+
+    public List<SemesterCourses> getBacklogElectiveCourses(Long studentId, Short semesterId, Short batchId) {
+        return semesterCoursesRepo.getBECourses(studentId, semesterId, batchId);
+    }
+
+    public List<TermCourses> getTermCourses(Short prgId, Short trmId) {
+        return trmcrsRepo.getTCourses(prgId, trmId);
+    }
+
+    public List<TermCourses> getOptionalCourses(Short semesterId, Short prgId, Short trmId) {
+        return trmcrsRepo.getOCourses(semesterId, prgId, trmId);
+    }
+
+    public List<TermCourses> getOptionalBacklogCourses(Long studentId, Short semesterId, Short prgId, Short trmId, Short batchId) {
+        return trmcrsRepo.getOBCourses(studentId,semesterId, prgId, trmId, batchId);
+    }
+
+    public List<TermCourses> getOtherTermCourses(Long studentId, Short semesterId, Short prgId, Short trmId) {
+        return trmcrsRepo.getOTermCourses(studentId, semesterId, prgId, trmId);
+    }   
+
+    public List<TermCourses> getGradeImprovementCourses(Long studentId, Short prgId, Short trmId) {
+        return trmcrsRepo.getGICourses(studentId, prgId, trmId);
     }
 
 }
