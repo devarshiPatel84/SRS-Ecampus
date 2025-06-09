@@ -18,7 +18,7 @@ public class SemesterCourses {
     private String screlective;
 
     @Column(name = "scrcrsid")
-    private Short scrcrsid;
+    private Long scrcrsid;
 
     @Column(name = "scrcgpid")
     private Short scrcgpid;
@@ -51,8 +51,8 @@ public class SemesterCourses {
     public String getScrelective() { return screlective; }
     public void setScrelective(String screlective) { this.screlective = screlective; }
 
-    public Short getScrcrsid() { return scrcrsid; }
-    public void setScrcrsid(Short scrcrsid) { this.scrcrsid = scrcrsid; }
+    public Long getScrcrsid() { return scrcrsid; }
+    public void setScrcrsid(Long scrcrsid) { this.scrcrsid = scrcrsid; }
 
     public Short getScrcgpid() { return scrcgpid; }
     public void setScrcgpid(Short scrcgpid) { this.scrcgpid = scrcgpid; }
