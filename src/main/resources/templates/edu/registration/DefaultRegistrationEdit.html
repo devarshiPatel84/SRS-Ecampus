@@ -107,6 +107,8 @@
 
                     <input type="hidden" name="studentId" th:value="${studentbean.stdid}" />
                     <input type="hidden" name="semesterId" th:value="${semesterbean.strid}" />
+                    <input type="hidden" name="termId" th:value="${termbean.trmid}" />
+                    <input type="hidden" name="semesterName" th:value="${semesterbean.strname}" />
 
                     <h3> Compulsory Courses</h3>
                     <table class="table table-bordered table-striped">
@@ -284,10 +286,10 @@
                             const selects = document.querySelectorAll('.course-select');
                             const picked = Array.from(selects)
                                 .map(s => s.value)
-                                .filter(v => v !== ""); // Values of currently selected options (crsid)
+                                .filter(v => v !== "");
 
                             selects.forEach(select => {
-                                const val = select.value; // Currently selected value in *this* dropdown
+                                const val = select.value; 
 
                                 // Find the checkbox in *this* row
                                 const row = select.closest('tr');
@@ -295,21 +297,13 @@
 
                                 if (checkbox) {
                                     if (val !== "") {
-                                        // If a course is selected in the dropdown:
-                                        // 1. Enable the checkbox
-                                        // 2. Check the checkbox (default behavior as per requirement)
-                                        // 3. Set the checkbox's value to the selected course ID
                                         checkbox.disabled = false;
                                         checkbox.checked = true;
-                                        checkbox.value = val; // Set the value to the course ID
+                                        checkbox.value = val; 
                                     } else {
-                                        // If "Select" (empty value) is chosen in the dropdown:
-                                        // 1. Disable the checkbox
-                                        // 2. Uncheck the checkbox
-                                        // 3. Clear the checkbox's value
                                         checkbox.disabled = true;
                                         checkbox.checked = false;
-                                        checkbox.value = ""; // Clear the value
+                                        checkbox.value = ""; 
                                     }
                                 }
 

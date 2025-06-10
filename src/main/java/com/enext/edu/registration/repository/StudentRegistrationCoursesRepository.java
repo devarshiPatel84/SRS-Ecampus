@@ -15,4 +15,7 @@ public interface StudentRegistrationCoursesRepository extends JpaRepository<Stud
     @Query(value = "SELECT * FROM ec2.STUDENTREGISTRATIONCOURSES src WHERE src.SRCSRGID = :srgid AND src.SRCROWSTATE > 0", nativeQuery = true)
     List<StudentRegistrationCourses> getbysrgid(@Param("srgid") Long srgid);
 
+    @Query("SELECT MAX(s.srcid) FROM StudentRegistrationCourses s")
+    Optional<Long> findMaxSrcid();
+
 }

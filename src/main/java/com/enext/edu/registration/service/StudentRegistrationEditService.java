@@ -63,8 +63,8 @@ public class StudentRegistrationEditService {
         return strcRepo.getbysrgid(id);
     }
 
-    public TermCourses getTermCourse(Integer id) {
-        return trmcrsRepo.getbytrmcrsid(id);
+    public TermCourses getTermCourse(Long termcourseId) {
+        return trmcrsRepo.getbytrmcrsid(termcourseId);
     }
 
     public Courses getCourseById(Long id) {
