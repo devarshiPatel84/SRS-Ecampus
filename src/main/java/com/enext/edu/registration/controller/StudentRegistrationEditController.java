@@ -49,7 +49,7 @@ public class StudentRegistrationEditController {
 
             List<Courses> courses = new ArrayList<>();
                 for (StudentRegistrationCourses src : strgcrs) {
-                    Integer termcourseId = src.getSrctcrid();
+                    Long termcourseId = src.getSrctcrid();
                     
                     TermCourses tc = editService.getTermCourse(termcourseId);
                     Courses course = editService.getCourseById(tc.getTcrcrsid());
@@ -57,6 +57,7 @@ public class StudentRegistrationEditController {
                         courses.add(course);
                     }
                 }
+                courses.sort(Comparator.comparing(Courses::getCrsname));
                 model.addAttribute("studentRegistrationCoursesbean", strgcrs);
                 model.addAttribute("courses", courses);       
             return RegistrationConstants.JSPSTUDENTREGISTRATIONVIEW;

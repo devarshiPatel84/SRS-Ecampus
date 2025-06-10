@@ -17,4 +17,7 @@ public interface StudentRegistrationsRepository extends JpaRepository<StudentReg
 
     @Query(value = "SELECT * FROM ec2.STUDENTREGISTRATIONS srg WHERE srg.SRGROWSTATE > 0 AND srg.SRGSTDID=:studentId and srg.SRGSTRID=:semesterId", nativeQuery = true)
     StudentRegistrations getsrgbystdidandstrid(@Param("studentId") Long studentId, @Param("semesterId") Short semesterId);
+
+    @Query("SELECT MAX(s.srgid) FROM StudentRegistrations s")
+    Optional<Long> findMaxSrgid();
 }
