@@ -9,45 +9,38 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.enext.edu.registration.RegistrationConstants;
-import com.enext.edu.registration.service.StudentRegistrationSaveService;
+//import com.enext.edu.registration.service.StudentRegistrationSaveService;
 
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 
 @Controller
 public class StudentRegistrationSaveController {
     
-    @Autowired
-    private StudentRegistrationSaveService saveService;
+    // @Autowired
+    // private StudentRegistrationSaveService saveService;
 
     @PostMapping("/submitRegistration")
     public String submitRegistration(
-            @RequestParam Integer studentId,
-            @RequestParam Integer semesterId,
+            @RequestParam Long studentId,
+            @RequestParam Short semesterId,
             @RequestParam(required = false) String remarks,
             @RequestParam(required = false) String authority,
-            @RequestParam Map<String, String> allParams,
+            @RequestParam MultiValueMap<String, String> allParams,
             Model model) {
 
         // Extract selected courses from course0 to course5
-        List<Integer> selectedCourseIds = new ArrayList<>();
+        System.out.println("Printing all parameters from the map:");
 
-        for (int i = 0; i <= 5; i++) {
-            String courseKey = "course" + i;
-            if (allParams.containsKey(courseKey)) {
-                String value = allParams.get(courseKey);
-                if (value != null && !value.isBlank()) {
-                    try {
-                        selectedCourseIds.add(Integer.parseInt(value));
-                    } catch (NumberFormatException e) {
-                        // skip invalid value
-                    }
-                }
-            }
-        }
+        // Method 1: Using forEach with a lambda expression (Java 8+)
+        allParams.forEach((key, values) -> {
+            System.out.println("Key: " + key);
+            System.out.println("Values: " + values); // Values will be a List<String>
+        });
 
-        saveService.saveRegistration(studentId, semesterId, selectedCourseIds, remarks);
+        // saveService.saveRegistration(studentId, semesterId, selectedCourseIds, remarks);
 
-        // Add attributes for confirmation page
+        // // Add attributes for confirmation page
         model.addAttribute("semesterName", "Semester " + semesterId); // or fetch from DB
         model.addAttribute("today", LocalDate.now());
         model.addAttribute("remarks", remarks);

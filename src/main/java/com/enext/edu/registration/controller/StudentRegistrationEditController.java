@@ -36,113 +36,6 @@ public class StudentRegistrationEditController {
 
         Terms trm = editService.getTerm(str.getStrtrmid());
 
-        if(srg!=null){
-            List<StudentRegistrationCourses> strgcrs = editService.getStudentRegistrationCourses(srg.getSrgid());
-
-        List<Courses> courses = new ArrayList<>();
-            for (StudentRegistrationCourses src : strgcrs) {
-                Integer termcourseId = src.getSrctcrid();
-                
-                TermCourses tc = editService.getTermCourse(termcourseId);
-                Courses course = editService.getCourseById(tc.getTcrcrsid());
-                if (course != null) {
-                    courses.add(course);
-                }
-            }
-            model.addAttribute("studentRegistrationCoursesbean", strgcrs);
-            model.addAttribute("courses", courses);       
-        }
-        
-        List<Courses> compCourses = new ArrayList<>();
-        List<SemesterCourses> compulsoryCourses = editService.getCompulsoryCoursesBySemesterId(semesterId);
-        for (SemesterCourses sc : compulsoryCourses) {
-            Courses course = editService.getCourseById(sc.getScrcrsid());
-            if (course!= null) {
-                compCourses.add(course);
-            }
-        }
-        compCourses.sort(Comparator.comparing(Courses::getCrsname));
-
-        List<Courses> electCourses = new ArrayList<>();
-        List<CourseGroups> electiveCourses = editService.getElectiveCoursesBySemesterId(semesterId);
-        for (CourseGroups cg : electiveCourses) {
-            List<Courses> coursesList = editService.getCourseByCgpId(cg.getCgpid(), pr.getPrgid(), trm.getTrmid());
-            if (coursesList != null && !coursesList.isEmpty()) {
-                electCourses.addAll(coursesList);
-            }
-        }
-        electCourses.sort(Comparator.comparing(Courses::getCrsname));
-
-        List<Courses> backlogCCourses = new ArrayList<>();
-        List<SemesterCourses> backlogCourses = editService.getBacklogCompulsoryCourses(studentId,semesterId, btc.getBchid());
-        for (SemesterCourses sc : backlogCourses) {
-            Courses course = editService.getCourseById(sc.getScrcrsid());
-            if (course != null) {
-                backlogCCourses.add(course);
-            }
-        }
-        backlogCCourses.sort(Comparator.comparing(Courses::getCrsname));
-
-        List<Courses> backlogECourses = new ArrayList<>();
-        List<SemesterCourses> backlogElectiveCourses =editService.getBacklogElectiveCourses(studentId, semesterId, btc.getBchid());
-        for (SemesterCourses sc : backlogElectiveCourses) {
-            Courses course = editService.getCourseById(sc.getScrcrsid());
-            if (course != null) {
-                backlogECourses.add(course);
-            }
-        }
-        backlogECourses.sort(Comparator.comparing(Courses::getCrsname));
-
-        List<Courses> termCourses = new ArrayList<>();
-        List<TermCourses> termCrs = editService.getTermCourses(pr.getPrgid(), trm.getTrmid());
-        for (TermCourses tc : termCrs) {
-            Courses course = editService.getCourseById(tc.getTcrcrsid());
-            if (course != null) {
-                termCourses.add(course);
-            }
-        }
-        termCourses.sort(Comparator.comparing(Courses::getCrsname));
-
-        List<Courses> optionalCourses = new ArrayList<>();
-        List<TermCourses> optCourses = editService.getOptionalCourses(semesterId, pr.getPrgid(), trm.getTrmid());
-        for (TermCourses tc : optCourses) {
-            Courses course = editService.getCourseById(tc.getTcrcrsid());
-            if (course != null) {
-                optionalCourses.add(course);
-            }
-        }
-        optionalCourses.sort(Comparator.comparing(Courses::getCrsname));
-
-        List<Courses> optionalBacklogCourses = new ArrayList<>();
-        List<TermCourses> optBacklogCourses = editService.getOptionalBacklogCourses(studentId, semesterId, pr.getPrgid(), trm.getTrmid(), btc.getBchid());
-        for (TermCourses tc : optBacklogCourses) {
-            Courses course = editService.getCourseById(tc.getTcrcrsid());
-            if (course != null) {
-                optionalBacklogCourses.add(course);
-            }
-        }
-        optionalBacklogCourses.sort(Comparator.comparing(Courses::getCrsname));
-
-        List<Courses> otherTermCourses = new ArrayList<>();
-        List<TermCourses> otherTermCrs = editService.getOtherTermCourses(studentId, semesterId,pr.getPrgid(), trm.getTrmid());
-        for (TermCourses tc : otherTermCrs) {
-            Courses course = editService.getCourseById(tc.getTcrcrsid());
-            if (course != null) {
-                otherTermCourses.add(course);
-            }
-        }
-        otherTermCourses.sort(Comparator.comparing(Courses::getCrsname));
-
-        List<Courses> gradeImprovementCourses = new ArrayList<>();
-        List<TermCourses> gradeImprovementCrs = editService.getGradeImprovementCourses(studentId,pr.getPrgid(), trm.getTrmid());
-        for (TermCourses tc : gradeImprovementCrs) {
-            Courses course = editService.getCourseById(tc.getTcrcrsid());
-            if (course != null) {
-                gradeImprovementCourses.add(course);
-            }
-        }
-        gradeImprovementCourses.sort(Comparator.comparing(Courses::getCrsname));
-
         model.addAttribute("studentbean", st);
         model.addAttribute("semesterbean", str);
         model.addAttribute("studentRegistrationbean", srg);
@@ -150,24 +43,128 @@ public class StudentRegistrationEditController {
         model.addAttribute("batchbean", btc);
         model.addAttribute("programbean", pr);
         model.addAttribute("termbean", trm);
-        // model.addAttribute("compulsoryCoursesbean", compulsoryCourses);
-        model.addAttribute("cSemesterCoursesbean", compCourses);
-        model.addAttribute("eSemesterCoursesbean", electCourses);
-        model.addAttribute("bcSemesterCoursesbean", backlogCCourses);
-        model.addAttribute("beSemesterCoursesbean", backlogECourses);
-        model.addAttribute("termCoursesbean", termCourses);
-        model.addAttribute("optionalCoursesbean", optionalCourses);
-        model.addAttribute("optionalBacklogCoursesbean", optionalBacklogCourses);
-        model.addAttribute("otherTermCoursesbean", otherTermCourses);
-        model.addAttribute("gradeImprovementCoursesbean", gradeImprovementCourses);
 
         if(srg!=null){
+            List<StudentRegistrationCourses> strgcrs = editService.getStudentRegistrationCourses(srg.getSrgid());
+
+            List<Courses> courses = new ArrayList<>();
+                for (StudentRegistrationCourses src : strgcrs) {
+                    Integer termcourseId = src.getSrctcrid();
+                    
+                    TermCourses tc = editService.getTermCourse(termcourseId);
+                    Courses course = editService.getCourseById(tc.getTcrcrsid());
+                    if (course != null) {
+                        courses.add(course);
+                    }
+                }
+                model.addAttribute("studentRegistrationCoursesbean", strgcrs);
+                model.addAttribute("courses", courses);       
             return RegistrationConstants.JSPSTUDENTREGISTRATIONVIEW;
         }
-        else {
+        else{
+            List<Courses> compCourses = new ArrayList<>();
+            List<SemesterCourses> compulsoryCourses = editService.getCompulsoryCoursesBySemesterId(semesterId);
+            for (SemesterCourses sc : compulsoryCourses) {
+                Courses course = editService.getCourseById(sc.getScrcrsid());
+                if (course!= null) {
+                    compCourses.add(course);
+                }
+            }
+            compCourses.sort(Comparator.comparing(Courses::getCrsname));
+
+            List<Courses> electCourses = new ArrayList<>();
+            List<CourseGroups> electiveCourses = editService.getElectiveCoursesBySemesterId(semesterId);
+            for (CourseGroups cg : electiveCourses) {
+                List<Courses> coursesList = editService.getCourseByCgpId(cg.getCgpid(), pr.getPrgid(), trm.getTrmid());
+                if (coursesList != null && !coursesList.isEmpty()) {
+                    electCourses.addAll(coursesList);
+                }
+            }
+            electCourses.sort(Comparator.comparing(Courses::getCrsname));
+
+            List<Courses> backlogCCourses = new ArrayList<>();
+            List<SemesterCourses> backlogCourses = editService.getBacklogCompulsoryCourses(studentId,semesterId, btc.getBchid());
+            for (SemesterCourses sc : backlogCourses) {
+                Courses course = editService.getCourseById(sc.getScrcrsid());
+                if (course != null) {
+                    backlogCCourses.add(course);
+                }
+            }
+            backlogCCourses.sort(Comparator.comparing(Courses::getCrsname));
+
+            List<Courses> backlogECourses = new ArrayList<>();
+            List<SemesterCourses> backlogElectiveCourses =editService.getBacklogElectiveCourses(studentId, semesterId, btc.getBchid());
+            for (SemesterCourses sc : backlogElectiveCourses) {
+                Courses course = editService.getCourseById(sc.getScrcrsid());
+                if (course != null) {
+                    backlogECourses.add(course);
+                }
+            }
+            backlogECourses.sort(Comparator.comparing(Courses::getCrsname));
+
+            List<Courses> termCourses = new ArrayList<>();
+            List<TermCourses> termCrs = editService.getTermCourses(pr.getPrgid(), trm.getTrmid());
+            for (TermCourses tc : termCrs) {
+                Courses course = editService.getCourseById(tc.getTcrcrsid());
+                if (course != null) {
+                    termCourses.add(course);
+                }
+            }
+            termCourses.sort(Comparator.comparing(Courses::getCrsname));
+
+            List<Courses> optionalCourses = new ArrayList<>();
+            List<TermCourses> optCourses = editService.getOptionalCourses(semesterId, pr.getPrgid(), trm.getTrmid());
+            for (TermCourses tc : optCourses) {
+                Courses course = editService.getCourseById(tc.getTcrcrsid());
+                if (course != null) {
+                    optionalCourses.add(course);
+                }
+            }
+            optionalCourses.sort(Comparator.comparing(Courses::getCrsname));
+
+            List<Courses> optionalBacklogCourses = new ArrayList<>();
+            List<TermCourses> optBacklogCourses = editService.getOptionalBacklogCourses(studentId, semesterId, pr.getPrgid(), trm.getTrmid(), btc.getBchid());
+            for (TermCourses tc : optBacklogCourses) {
+                Courses course = editService.getCourseById(tc.getTcrcrsid());
+                if (course != null) {
+                    optionalBacklogCourses.add(course);
+                }
+            }
+            optionalBacklogCourses.sort(Comparator.comparing(Courses::getCrsname));
+
+            List<Courses> otherTermCourses = new ArrayList<>();
+            List<TermCourses> otherTermCrs = editService.getOtherTermCourses(studentId, semesterId,pr.getPrgid(), trm.getTrmid());
+            for (TermCourses tc : otherTermCrs) {
+                Courses course = editService.getCourseById(tc.getTcrcrsid());
+                if (course != null) {
+                    otherTermCourses.add(course);
+                }
+            }
+            otherTermCourses.sort(Comparator.comparing(Courses::getCrsname));
+
+            List<Courses> gradeImprovementCourses = new ArrayList<>();
+            List<TermCourses> gradeImprovementCrs = editService.getGradeImprovementCourses(studentId,pr.getPrgid(), trm.getTrmid());
+            for (TermCourses tc : gradeImprovementCrs) {
+                Courses course = editService.getCourseById(tc.getTcrcrsid());
+                if (course != null) {
+                    gradeImprovementCourses.add(course);
+                }
+            }
+            gradeImprovementCourses.sort(Comparator.comparing(Courses::getCrsname));
+
+            // model.addAttribute("compulsoryCoursesbean", compulsoryCourses);
+            model.addAttribute("cSemesterCoursesbean", compCourses);
+            model.addAttribute("eSemesterCoursesbean", electCourses);
+            model.addAttribute("bcSemesterCoursesbean", backlogCCourses);
+            model.addAttribute("beSemesterCoursesbean", backlogECourses);
+            model.addAttribute("termCoursesbean", termCourses);
+            model.addAttribute("optionalCoursesbean", optionalCourses);
+            model.addAttribute("optionalBacklogCoursesbean", optionalBacklogCourses);
+            model.addAttribute("otherTermCoursesbean", otherTermCourses);
+            model.addAttribute("gradeImprovementCoursesbean", gradeImprovementCourses);
+
             return RegistrationConstants.JSPSTUDENTREGISTRATIONEDIT;
         }
-        
 
     }
 }

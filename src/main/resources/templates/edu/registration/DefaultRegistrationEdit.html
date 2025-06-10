@@ -103,204 +103,260 @@
                 </table>
 
                 <!-- New Registration View -->
-                <h3> Compulsory Courses</h3>
-                <table class="table table-bordered table-striped">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Semester</th>
-                            <th>Title</th>
-                            <th>Code</th>
-                            <th>Credits</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="course : ${cSemesterCoursesbean}">
-                            <td th:text="${semesterbean.strname}">Semester Name</td>
-                            <td th:text="${course.crsname}">Course Title</td>
-                            <td th:text="${course.crscode}">Course Code</td>
-                            <td th:text="${course.crscreditpoints}">Course Credits</td>
-                            <td th:text="Select">Course Status</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <form th:action="@{/submitRegistration}" method="post">
 
-                <h3> Elective Courses</h3>
-                <table class="table table-bordered table-striped">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Semester</th>
-                            <th>Title</th>
-                            <th>Code</th>
-                            <th>Credits</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="course : ${eSemesterCoursesbean}">
-                            <td th:text="${semesterbean.strname}">Semester Name</td>
-                            <td th:text="${course.crsname}">Course Title</td>
-                            <td th:text="${course.crscode}">Course Code</td>
-                            <td th:text="${course.crscreditpoints}">Course Credits</td>
-                            <td th:text="Select">Course Status</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <input type="hidden" name="studentId" th:value="${studentbean.stdid}" />
+                    <input type="hidden" name="semesterId" th:value="${semesterbean.strid}" />
 
-                <h3> Backlog Compulsory Courses</h3>
-                <table class="table table-bordered table-striped">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Semester</th>
-                            <th>Title</th>
-                            <th>Code</th>
-                            <th>Credits</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="course : ${bcSemesterCoursesbean}">
-                            <td th:text="${semesterbean.strname}">Semester Name</td>
-                            <td th:text="${course.crsname}">Course Title</td>
-                            <td th:text="${course.crscode}">Course Code</td>
-                            <td th:text="${course.crscreditpoints}">Course Credits</td>
-                            <td th:text="Select">Course Status</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <h3> Compulsory Courses</h3>
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Course</th>
+                                <th>Register</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="course, iterStat : ${cSemesterCoursesbean}">
+                                <td th:text="${iterStat.index + 1}">1</td>
+                                <td>
+                                    <span th:text="${course.crsname + ' | ' + course.crscode + ' | ' + course.crscreditpoints}">Course Title | Code | Credits</span>
+                                    <br>
+                                    <input type="hidden" name="selectedCourseIds" th:value="${course.crsid}"/>
+                                </td>
+                                <td>
+                                    <input type="checkbox" checked disabled class="form-check-input"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <h3> Backlog Elective Courses</h3>
-                <table class="table table-bordered table-striped">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Semester</th>
-                            <th>Title</th>
-                            <th>Code</th>
-                            <th>Credits</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="course : ${beSemesterCoursesbean}">
-                            <td th:text="${semesterbean.strname}">Semester Name</td>
-                            <td th:text="${course.crsname}">Course Title</td>
-                            <td th:text="${course.crscode}">Course Code</td>
-                            <td th:text="${course.crscreditpoints}">Course Credits</td>
-                            <td th:text="Select">Course Status</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <h3>Other Courses</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Course</th>
+                                <th>Register</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="i : ${#numbers.sequence(0, 5)}">
+                                <td th:text="${i + 1}">1</td>
+                                <td>
+                                    <select class="form-select course-select" th:id="'othercourse' + ${i}" data-index="${i}">
+                                        <option value="">Select</option>
+                                        <option th:each="course : ${otherTermCoursesbean}"
+                                                th:value="${course.crsid}"
+                                                th:text="${course.crsname + ' | ' + course.crscode + ' | ' + course.crscreditpoints}">
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                        class="form-check-input course-checkbox"
+                                        th:id="'otherRegister' + ${i}"
+                                        name="selectedOtherCourses"
+                                        value="" disabled /> </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <h3> Term Courses</h3>
-                <table class="table table-bordered table-striped">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Semester</th>
-                            <th>Title</th>
-                            <th>Code</th>
-                            <th>Credits</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="course : ${termCoursesbean}">
-                            <td th:text="${semesterbean.strname}">Semester Name</td>
-                            <td th:text="${course.crsname}">Course Title</td>
-                            <td th:text="${course.crscode}">Course Code</td>
-                            <td th:text="${course.crscreditpoints}">Course Credits</td>
-                            <td th:text="Select">Course Status</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <h3>Grade Improvement Courses</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Course</th>
+                                <th>Register</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="i : ${#numbers.sequence(0, 5)}">
+                                <td th:text="${i + 1}">1</td>
+                                <td>
+                                    <select class="form-select course-select" th:id="'gradeImprovementcourse' + ${i}" data-index="${i}">
+                                        <option value="">Select</option>
+                                        <option th:each="course : ${gradeImprovementCoursesbean}"
+                                                th:value="${course.crsid}"
+                                                th:text="${course.crsname + ' | ' + course.crscode + ' | ' + course.crscreditpoints}">
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                        class="form-check-input course-checkbox"
+                                        th:id="'gradeRegister' + ${i}"
+                                        name="selectedGradeImprovementCourses"
+                                        value="" disabled /> </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <h3> Optional Courses</h3>
-                <table class="table table-bordered table-striped">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Semester</th>
-                            <th>Title</th>
-                            <th>Code</th>
-                            <th>Credits</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="course : ${optionalCoursesbean}">
-                            <td th:text="${semesterbean.strname}">Semester Name</td>
-                            <td th:text="${course.crsname}">Course Title</td>
-                            <td th:text="${course.crscode}">Course Code</td>
-                            <td th:text="${course.crscreditpoints}">Course Credits</td>
-                            <td th:text="Select">Course Status</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <h3>Backlog Compulsory Courses</h3>
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Course</th>
+                                <th>Register</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="course, iterStat : ${bcSemesterCoursesbean}">
+                                <td th:text="${iterStat.index + 1}">1</td>
+                                <td>
+                                    <span th:text="${course.crsname + ' | ' + course.crscode + ' | ' + course.crscreditpoints}">Course Title | Code | Credits</span>
+                                    <br>
+                                    <input type="hidden" name="selectedCourseIds" th:value="${course.crsid}"/>
+                                </td>
+                                <td>
+                                    <input type="checkbox" checked disabled class="form-check-input"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <h3> Optional Backlog Courses</h3>
-                <table class="table table-bordered table-striped">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Semester</th>
-                            <th>Title</th>
-                            <th>Code</th>
-                            <th>Credits</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="course : ${optionalBacklogCoursesbean}">
-                            <td th:text="${semesterbean.strname}">Semester Name</td>
-                            <td th:text="${course.crsname}">Course Title</td>
-                            <td th:text="${course.crscode}">Course Code</td>
-                            <td th:text="${course.crscreditpoints}">Course Credits</td>
-                            <td th:text="Select">Course Status</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <h3>Backlog Courses</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Course</th>
+                                <th>Register</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="i : ${#numbers.sequence(0, 5)}">
+                                <td th:text="${i + 1}">1</td>
+                                <td>
+                                    <select class="form-select course-select" th:id="'backlogcourse' + ${i}" data-index="${i}">
+                                        <option value="">Select</option>
+                                        <option th:each="course : ${optionalBacklogCoursesbean}"
+                                                th:value="${course.crsid}"
+                                                th:text="${course.crsname + ' | ' + course.crscode + ' | ' + course.crscreditpoints}">
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                        class="form-check-input course-checkbox"
+                                        th:id="'backlogRegister' + ${i}"
+                                        name="selectedBacklogCourses"
+                                        value="" disabled /> </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <h3> Other Term Courses</h3>
-                <table class="table table-bordered table-striped">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Semester</th>
-                            <th>Title</th>
-                            <th>Code</th>
-                            <th>Credits</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="course : ${otherTermCoursesbean}">
-                            <td th:text="${semesterbean.strname}">Semester Name</td>
-                            <td th:text="${course.crsname}">Course Title</td>
-                            <td th:text="${course.crscode}">Course Code</td>
-                            <td th:text="${course.crscreditpoints}">Course Credits</td>
-                            <td th:text="Select">Course Status</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <h3>Audit Courses</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Course</th>
+                                <th>Register</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="i : ${#numbers.sequence(0, 5)}">
+                                <td th:text="${i + 1}">1</td>
+                                <td>
+                                    <select class="form-select course-select" th:id="'auditcourse' + ${i}" data-index="${i}">
+                                        <option value="">Select</option>
+                                        <option th:each="course : ${otherTermCoursesbean}" th:value="${course.crsid}"
+                                                th:text="${course.crsname + ' | ' + course.crscode + ' | ' + course.crscreditpoints}">
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                        class="form-check-input course-checkbox"
+                                        th:id="'auditRegister' + ${i}"
+                                        name="selectedAuditCourses"
+                                        value="" disabled /> </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <h3> Grade Improvement Courses </h3>
-                <table class="table table-bordered table-striped">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Semester</th>
-                            <th>Title</th>
-                            <th>Code</th>
-                            <th>Credits</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="course : ${gradeImprovementCoursesbean}">
-                            <td th:text="${semesterbean.strname}">Semester Name</td>
-                            <td th:text="${course.crsname}">Course Title</td>
-                            <td th:text="${course.crscode}">Course Code</td>
-                            <td th:text="${course.crscreditpoints}">Course Credits</td>
-                            <td th:text="Select">Course Status</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
+                    <script>
+                        function filterCourses() {
+                            const selects = document.querySelectorAll('.course-select');
+                            const picked = Array.from(selects)
+                                .map(s => s.value)
+                                .filter(v => v !== ""); // Values of currently selected options (crsid)
+
+                            selects.forEach(select => {
+                                const val = select.value; // Currently selected value in *this* dropdown
+
+                                // Find the checkbox in *this* row
+                                const row = select.closest('tr');
+                                const checkbox = row.querySelector('.course-checkbox');
+
+                                if (checkbox) {
+                                    if (val !== "") {
+                                        // If a course is selected in the dropdown:
+                                        // 1. Enable the checkbox
+                                        // 2. Check the checkbox (default behavior as per requirement)
+                                        // 3. Set the checkbox's value to the selected course ID
+                                        checkbox.disabled = false;
+                                        checkbox.checked = true;
+                                        checkbox.value = val; // Set the value to the course ID
+                                    } else {
+                                        // If "Select" (empty value) is chosen in the dropdown:
+                                        // 1. Disable the checkbox
+                                        // 2. Uncheck the checkbox
+                                        // 3. Clear the checkbox's value
+                                        checkbox.disabled = true;
+                                        checkbox.checked = false;
+                                        checkbox.value = ""; // Clear the value
+                                    }
+                                }
+
+                                // Hide any <option> that’s already picked elsewhere (for all select elements)
+                                Array.from(select.options).forEach(opt => {
+                                    // Keep the "Select" option and the currently selected option visible
+                                    if (opt.value === "" || opt.value === val) {
+                                        opt.hidden = false;
+                                    } else {
+                                        // Hide options that are picked by other select elements
+                                        opt.hidden = picked.includes(opt.value);
+                                    }
+                                });
+                            });
+                        }
+
+                        // Attach onchange handlers to all course-select elements
+                        document.querySelectorAll('.course-select').forEach(s =>
+                            s.addEventListener('change', filterCourses)
+                        );
+
+                        // This ensures the function runs once when page loads, to initialize checkbox states and dropdown options
+                        document.addEventListener('DOMContentLoaded', filterCourses);
+                    </script>
+
+                    <div class="mb-3">
+                        <label class="form-label">Remarks</label>
+                        <textarea name="remarks" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Select Course Authority:</label>
+                        <select name="authority" class="form-select">
+                            <option value="UG Convenor">UG Convenor</option>
+                        </select>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+
+                <!-- Back Button -->
+                <form th:action="@{/studentRegistrations}" method="get" class="mt-3 text-center">
+                    <input type="hidden" name="stdid" th:value="${studentbean.stdid}" />
+                    <button type="submit" class="btn btn-secondary">Back</button>
+                </form>
             </div>
         </td>
         <td class="sidemenu"></td>
