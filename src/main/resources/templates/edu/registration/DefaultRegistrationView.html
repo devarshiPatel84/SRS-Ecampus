@@ -77,11 +77,12 @@
     <tr>
         <td class="sidemenu"></td>
         <td class="content">
-            <div class="table-container">
-                <h2>Registration Form</h2>
+            <div th:if="${studentRegistrationbean} == null">
+                <h2>No courses registered for this semester.</h2>
+            </div>
 
-                <!-- Header Info -->
-                <!-- Header Info -->
+            <div th:unless="${studentRegistrationbean} == null" class="table-container">
+                <h2>Registration Form</h2>
                 <table class="table table-bordered">
                     <tr>
                         <td><strong>Name</strong></td>
@@ -132,6 +133,7 @@
                 </form>
 
             </div>
+
         </td>
         <td class="sidemenu"></td>
     </tr>

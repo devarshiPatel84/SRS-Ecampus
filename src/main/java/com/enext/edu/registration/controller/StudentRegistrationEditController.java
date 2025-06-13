@@ -1,5 +1,6 @@
 package com.enext.edu.registration.controller;
 import com.enext.edu.registration.RegistrationConstants;
+import com.enext.edu.registration.config.RegistrationDeadlineConfig;
 import com.enext.edu.registration.model.*;
 import com.enext.edu.registration.service.*;
 
@@ -19,6 +20,12 @@ public class StudentRegistrationEditController {
 
     @Autowired
     private StudentRegistrationEditService editService;
+
+    @Autowired
+    private StudentRegistrationService registrationService;
+
+    @Autowired
+    private RegistrationDeadlineConfig deadlineConfig;
 
     @GetMapping("/studentRegistrationEdit")
     public String editStudentRegistration(
@@ -53,10 +60,27 @@ public class StudentRegistrationEditController {
         model.addAttribute("programbean", pr);
         model.addAttribute("termbean", trm);
 
-        if(srg!=null){
-            List<StudentRegistrationCourses> strgcrs = editService.getStudentRegistrationCourses(srg.getSrgid());
+        boolean isWithinDeadline = deadlineConfig.isWithinDeadline();
 
+        Short maxStrid = registrationService.getMaxSemesterId(st.getStdbchid());
+
+        System.out.println("Type of studentId: " + studentId.getClass().getName());
+        System.out.println("Type of semesterId: " + semesterId.getClass().getName());
+        System.out.println("Type of maxStrid: " + (maxStrid != null ? maxStrid.getClass().getName() : "null"));
+        System.out.println("Type of isWithinDeadline: " + ((Object)isWithinDeadline).getClass().getName());
+
+        System.out.println("Semester ID: " + semesterId);
+        System.out.println("Max Semester ID: " + maxStrid);
+        System.out.println("Is Within Deadline: " + isWithinDeadline);
+
+        if(semesterId.shortValue() != maxStrid.shortValue() || !isWithinDeadline) {
+            System.out.println("DEBUG: Going to VIEW mode");
+            List<StudentRegistrationCourses> strgcrs = new ArrayList<>();
             List<Courses> courses = new ArrayList<>();
+
+            if (srg != null) {
+                strgcrs = editService.getStudentRegistrationCourses(srg.getSrgid());
+
                 for (StudentRegistrationCourses src : strgcrs) {
                     Long termcourseId = src.getSrctcrid();
                     
@@ -67,11 +91,14 @@ public class StudentRegistrationEditController {
                     }
                 }
                 courses.sort(Comparator.comparing(Courses::getCrsname));
-                model.addAttribute("studentRegistrationCoursesbean", strgcrs);
-                model.addAttribute("courses", courses);       
+            }
+            
+            model.addAttribute("studentRegistrationCoursesbean", strgcrs);
+            model.addAttribute("courses", courses);       
             return RegistrationConstants.JSPSTUDENTREGISTRATIONVIEW;
         }
         else{
+            System.out.println("DEBUG: Going to EDIT mode");
             List<Courses> compCourses = new ArrayList<>();
             List<SemesterCourses> compulsoryCourses = editService.getCompulsoryCoursesBySemesterId(semesterId);
             for (SemesterCourses sc : compulsoryCourses) {

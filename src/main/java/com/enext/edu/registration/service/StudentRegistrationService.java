@@ -22,12 +22,13 @@ public class StudentRegistrationService {
         return studentRepo.findstudent(id);
     }
 
-
     public List<Semesters> getSemesterById(Short id) {
         return semesterRepo.findActiveSemestersByBranchId(id);
     }
-    
 
+    public Short getMaxSemesterId(Short batchId) {
+        return semesterRepo.findMaxSemesterId(batchId);
+    }
     public List<StudentRegistrations> getRegistrationsByStudentId(Long studentId) {
          return registrationRepo.findregisteredsemesters(studentId);
     }
