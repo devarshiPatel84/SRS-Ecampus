@@ -1,6 +1,7 @@
 package com.enext.edu.registration.controller;
 
 import com.enext.edu.registration.RegistrationConstants;
+import com.enext.edu.registration.config.RegistrationDeadlineConfig;
 import com.enext.edu.registration.model.*;
 import com.enext.edu.registration.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class StudentRegistrationController {
     @Autowired
     private StudentRegistrationService registrationService;
 
+    @Autowired
+    private RegistrationDeadlineConfig deadlineConfig;
+
     @GetMapping("/studentRegistrations")
     public String listStudentRegistrations(
             @RequestParam(name = RegistrationConstants.PARAM_STUDENT_ID, required = true) Long studentId,
@@ -32,7 +36,14 @@ public class StudentRegistrationController {
 
         Map<Short, StudentRegistrations> registrationsMap = regs.stream()
                 .collect(Collectors.toMap(StudentRegistrations::getSrgstrid, Function.identity()));
+        
+        boolean isWithinDeadline = deadlineConfig.isWithinDeadline();
 
+        Short maxStrid = registrationService.getMaxSemesterId(st.getStdbchid());
+        System.out.println("Max Semester ID: " + maxStrid);
+
+        model.addAttribute("isWithinDeadline", isWithinDeadline);
+        model.addAttribute("maxStrid", maxStrid);
         model.addAttribute("studentbean", st);
         model.addAttribute("semestersbean", smt);
         model.addAttribute(RegistrationConstants.ATTRIBUTESTUDENTREGISTRATIONS,registrationsMap);
