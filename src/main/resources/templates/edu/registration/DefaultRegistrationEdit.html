@@ -102,6 +102,31 @@
                     </tr>
                 </table>
 
+                <!-- only show this block if the bean was set -->
+                <div th:if="${studentRegistrationCoursesbean != null}">
+                <h3>Courses Registered Right Now</h3>
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Semester</th>
+                            <th>Title</th>
+                            <th>Code</th>
+                            <th>Credits</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="course : ${courses}">
+                            <td th:text="${semesterbean.strname}">Semester Name</td>
+                            <td th:text="${course.crsname}">Course Title</td>
+                            <td th:text="${course.crscode}">Course Code</td>
+                            <td th:text="${course.crscreditpoints}">Course Credits</td>
+                            <td th:text="Active">Course Status</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+
                 <!-- New Registration View -->
                 <form th:action="@{/submitRegistration}" method="post">
 

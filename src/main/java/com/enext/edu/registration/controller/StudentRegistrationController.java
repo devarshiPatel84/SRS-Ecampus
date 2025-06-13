@@ -40,7 +40,6 @@ public class StudentRegistrationController {
         boolean isWithinDeadline = deadlineConfig.isWithinDeadline();
 
         Short maxStrid = registrationService.getMaxSemesterId(st.getStdbchid());
-        System.out.println("Max Semester ID: " + maxStrid);
 
         model.addAttribute("isWithinDeadline", isWithinDeadline);
         model.addAttribute("maxStrid", maxStrid);
