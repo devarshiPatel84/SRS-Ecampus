@@ -150,7 +150,8 @@ public class StudentRegistrationSaveController {
                 for (String courseId : selectedAuditCourseIds) {
                     StudentRegistrationCourses src = new StudentRegistrationCourses();
                     src.setSrcsrgid(maxSrgid.orElse(0L) + 1); // Use the same srgid as registration
-                    src.setSrctype("REGULAR");
+                    src.setSrctype("AUDIT");
+                    src.setSrcfield2("Pass/Not Pass Course");
                     src.setSrcstatus("ACTIVE");
                     src.setSrccreatedby(7L);
                     src.setSrccreatedat(LocalDateTime.now());

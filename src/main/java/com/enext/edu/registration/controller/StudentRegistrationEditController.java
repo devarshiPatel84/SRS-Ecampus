@@ -31,6 +31,15 @@ public class StudentRegistrationEditController {
 
         StudentRegistrations srg = editService.getRegistrationsByStudentIdandSemesterId(studentId, semesterId);
 
+        String cpi;
+        if(srg!=null){
+            cpi = editService.getlastcpi(studentId);
+        }
+        else{
+            cpi = editService.getlatestcpi(studentId);
+        }
+
+
         Batches btc = editService.getbatch(str.getStrbchid());
         Programs pr = editService.getprogram(btc.getBchprgid());
 
@@ -144,14 +153,16 @@ public class StudentRegistrationEditController {
             otherTermCourses.sort(Comparator.comparing(Courses::getCrsname));
 
             List<Courses> gradeImprovementCourses = new ArrayList<>();
-            List<TermCourses> gradeImprovementCrs = editService.getGradeImprovementCourses(studentId,pr.getPrgid(), trm.getTrmid());
-            for (TermCourses tc : gradeImprovementCrs) {
-                Courses course = editService.getCourseById(tc.getTcrcrsid());
-                if (course != null) {
-                    gradeImprovementCourses.add(course);
+            if (Double.parseDouble(cpi) < 5) {
+                List<TermCourses> gradeImprovementCrs = editService.getGradeImprovementCourses(studentId,pr.getPrgid(), trm.getTrmid());
+                for (TermCourses tc : gradeImprovementCrs) {
+                    Courses course = editService.getCourseById(tc.getTcrcrsid());
+                    if (course != null) {
+                        gradeImprovementCourses.add(course);
+                    }
                 }
+                gradeImprovementCourses.sort(Comparator.comparing(Courses::getCrsname));
             }
-            gradeImprovementCourses.sort(Comparator.comparing(Courses::getCrsname));
 
             // model.addAttribute("compulsoryCoursesbean", compulsoryCourses);
             model.addAttribute("cSemesterCoursesbean", compCourses);

@@ -38,6 +38,9 @@ public class StudentRegistrationEditService {
 
     @Autowired
     private CourseGroupsRepository courseGroupsRepo;
+
+    @Autowired
+    private StudentSemesterResultRepository stdstrresultRepo;
     
     public Semesters getSemesterBystrId(Short id) {
         return semesterRepo.findById(id).orElse(null);
@@ -109,6 +112,14 @@ public class StudentRegistrationEditService {
 
     public List<TermCourses> getGradeImprovementCourses(Long studentId, Short prgId, Short trmId) {
         return trmcrsRepo.getGICourses(studentId, prgId, trmId);
+    }
+
+    public String getlatestcpi(Long studentId) {
+        return stdstrresultRepo.getcpi(studentId);
+    }
+
+    public String getlastcpi(Long studentId) {
+        return stdstrresultRepo.getlcpi(studentId);
     }
 
 }
