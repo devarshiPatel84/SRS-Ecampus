@@ -84,10 +84,14 @@
                 <p><strong>Date:</strong> <span th:text="${today}">Date</span></p>
                 <p><strong>Remarks:</strong> <span th:text="${remarks}">Remarks</span></p>
 
-                <form th:action="@{/studentRegistrations}" method="get">
+                <!-- <form th:action="@{/studentRegistrations}" method="get">
                     <input type="hidden" name="stdid" th:value="${studentId}" />
                     <button type="submit" class="btn btn-secondary">Back to Registrations</button>
-                </form>
+                </form> -->
+                <div class="text-center mt-3">
+                    <a th:href="@{/studentRegistrations}" class="btn btn-secondary">Back</a>
+                </div>
+
             </div>
         </td>
         <td class="sidemenu"></td>

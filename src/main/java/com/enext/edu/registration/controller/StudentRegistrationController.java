@@ -4,6 +4,9 @@ import com.enext.edu.registration.RegistrationConstants;
 import com.enext.edu.registration.config.RegistrationDeadlineConfig;
 import com.enext.edu.registration.model.*;
 import com.enext.edu.registration.service.*;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +28,11 @@ public class StudentRegistrationController {
 
     @GetMapping("/studentRegistrations")
     public String listStudentRegistrations(
-            @RequestParam(name = RegistrationConstants.PARAM_STUDENT_ID, required = true) Long studentId,
+            // @RequestParam(name = RegistrationConstants.PARAM_STUDENT_ID, required = true) Long studentId,
+            HttpSession session,
             Model model) {
+
+        Long studentId = (Long) session.getAttribute("studentId");
 
         Students st = registrationService.getStudentById(studentId);
 
