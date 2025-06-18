@@ -98,13 +98,15 @@
                         <td><strong>Semester</strong></td>
                         <td th:text="${semesterbean.strname}">Semester</td>
                         <td><strong>Date</strong></td>
-                        <td th:text="${#temporals.format(T(java.time.LocalDate).now(), 'dd-MMM-yyyy')}">Today</td>
+                        <!-- <td th:text="${#temporals.format(T(java.time.LocalDate).now(), 'dd-MMM-yyyy')}">Today</td> -->
+                        <td th:text="${studentRegistrationbean != null and studentRegistrationbean.srgregdate != null ? #temporals.format(studentRegistrationbean.srgregdate, 'dd-MMM-yyyy') : #temporals.format(T(java.time.LocalDate).now(), 'dd-MMM-yyyy')}">Date</td>
+
                     </tr>
                 </table>
 
                 <!-- only show this block if the bean was set -->
-                <div th:if="${studentRegistrationCoursesbean != null}">
-                <h3>Courses Registered Right Now</h3>
+                <div th:if="${courses != null and not #lists.isEmpty(courses)}">
+                <h3>Current Course Registrations</h3>
                 <table class="table table-bordered table-striped">
                     <thead class="table-light">
                         <tr>
@@ -125,6 +127,7 @@
                         </tr>
                     </tbody>
                 </table>
+                <p><strong>Note: If you wish to modify your registration, please select all the courses you want to register for again and click the Submit button. This will be treated as a fresh registration and will replace your previous selection. If you do not wish to make any changes, no action is required.</strong></p>
                 </div>
 
                 <!-- New Registration View -->
@@ -372,10 +375,13 @@
                 </form>
 
                 <!-- Back Button -->
-                <form th:action="@{/studentRegistrations}" method="get" class="mt-3 text-center">
+                <!-- <form th:action="@{/studentRegistrations}" method="get" class="mt-3 text-center">
                     <input type="hidden" name="stdid" th:value="${studentbean.stdid}" />
                     <button type="submit" class="btn btn-secondary">Back</button>
-                </form>
+                </form> -->
+                <div class="text-center mt-3">
+                    <a th:href="@{/studentRegistrations}" class="btn btn-secondary">Back</a>
+                </div>
             </div>
         </td>
         <td class="sidemenu"></td>

@@ -137,7 +137,7 @@
                             <td th:text="${reg.strname}">Semester</td>
                             <td th:text="${#temporals.format(StudentRegistrations[reg.strid]?.srgregdate, 'yyyy-MM-dd')}">Date</td>
                             <td>
-                                <form th:action="@{/studentRegistrationEdit}" method="get" class="form-inline">
+                                <form th:action="@{/studentRegistrationEdit}" method="post" class="form-inline">
                                     <input type="hidden" name="stdid" th:value="${studentbean.stdid}" />
                                     <input type="hidden" name="strid" th:value="${reg.strid}" />
                                     <button type="submit" class="btn btn-sm btn-outline-primary" th:text="${maxStrid != reg.strid ? 'View' : (isWithinDeadline ? 'Edit' : 'View')}">Edit</button>
