@@ -1,0 +1,257 @@
+package com.enext.edu.registration.service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
+
+import com.enext.edu.registration.model.*;
+import com.enext.edu.registration.repository.*;
+
+import jakarta.transaction.Transactional;
+
+@Service
+@Transactional
+public class CourseAddDropSaveService {
+
+    @Autowired
+    private StudentRegistrationCoursesRepository registrationCoursesRepo;
+
+    @Autowired
+    private TermCoursesRepository termCoursesRepo;
+
+    @Autowired
+    private SemesterCoursesRepository semesterCoursesRepo;
+
+    @Autowired
+    private StudentAdjustmentCoursesRepository studentAdjustmentRepo;
+
+    public void removeCourseIds(Set<String> courseIds, Long srgid, Long termId, Short semesterId, Long studentId) {
+        if(courseIds != null) {
+            for (String courseId : courseIds) {
+                Long tcrid = termCoursesRepo.findTcrid(Long.parseLong(courseId), termId);
+                StudentAdjustmentCourses sacid = studentAdjustmentRepo.findSacid(tcrid.intValue(), srgid);
+
+                System.out.println("strid: " + semesterId);
+                System.out.println("crsid: " + courseId);
+                System.out.println("tcrid: " + tcrid);
+                System.out.println("srgid: " + srgid);
+
+                StudentRegistrationCourses src = registrationCoursesRepo.getSrg(tcrid, srgid);
+                if(src==null){
+                    System.out.println("NULL Found");
+                }
+                src.setSrcstatus("DROPPED");
+                src.setSrcfield1("ADJUSTMENT");
+                src.setSrclastupdatedat(LocalDateTime.now());
+                registrationCoursesRepo.save(src);
+
+                if(sacid != null){
+                    sacid.setSacstatus("DROPPED");
+                    sacid.setSacfield1("ADJUSTMENT");
+                    sacid.setSaclastupdatedat(LocalDateTime.now());
+                    sacid.setSaclastupdatedby(studentId);
+                    studentAdjustmentRepo.save(sacid);
+                }
+                else{
+                    Optional<Long> maxsacid = studentAdjustmentRepo.getMaxId();
+                    StudentAdjustmentCourses nsac = new StudentAdjustmentCourses();
+                    nsac.setSacid(maxsacid.orElse(0L)+1);
+                    nsac.setSacsrcid(src.getSrcid());
+                    nsac.setSacsrgid(srgid);
+                    nsac.setSactcrid(tcrid.intValue());
+                    nsac.setSactype("REGULAR");
+                    nsac.setSacscrid(src.getSrcscrid());
+                    nsac.setSacstatus("DROPPED");
+                    nsac.setSacfield1("ADJUSTMENT");
+                    nsac.setSaccreatedby(studentId);
+                    nsac.setSaccreatedat(LocalDateTime.now());
+                    nsac.setSacrowstate(1);
+                    studentAdjustmentRepo.save(nsac);
+                }
+            }
+        }
+    }
+
+    public void removeAuditCourseIds(List<String> courseIds, Long srgid, Long termId, Short semesterId, Long studentId) {
+        if(courseIds != null) {
+            for (String courseId : courseIds) {
+                Long tcrid = termCoursesRepo.findTcrid(Long.parseLong(courseId), termId);
+                StudentAdjustmentCourses sacid = studentAdjustmentRepo.findSacid(tcrid.intValue(), srgid);
+
+                System.out.println("strid: " + semesterId);
+                System.out.println("crsid: " + courseId);
+                System.out.println("tcrid: " + tcrid);
+                System.out.println("srgid: " + srgid);
+
+                StudentRegistrationCourses src = registrationCoursesRepo.getSrg(tcrid, srgid);
+                if(src==null){
+                    System.out.println("NULL Found");
+                }
+                src.setSrcstatus("DROPPED");
+                src.setSrcfield1("ADJUSTMENT");
+                src.setSrclastupdatedat(LocalDateTime.now());
+                registrationCoursesRepo.save(src);
+
+                if(sacid != null){
+                    sacid.setSacstatus("DROPPED");
+                    sacid.setSacfield1("ADJUSTMENT");
+                    sacid.setSaclastupdatedat(LocalDateTime.now());
+                    sacid.setSaclastupdatedby(studentId);
+                    studentAdjustmentRepo.save(sacid);
+                }
+                else{
+                    Optional<Long> maxsacid = studentAdjustmentRepo.getMaxId();
+                    StudentAdjustmentCourses nsac = new StudentAdjustmentCourses();
+                    nsac.setSacid(maxsacid.orElse(0L)+1);
+                    nsac.setSacsrcid(src.getSrcid());
+                    nsac.setSacsrgid(srgid);
+                    nsac.setSactcrid(tcrid.intValue());
+                    nsac.setSactype("AUDIT");
+                    nsac.setSacscrid(src.getSrcscrid());
+                    nsac.setSacstatus("DROPPED");
+                    nsac.setSacfield1("ADJUSTMENT");
+                    nsac.setSaccreatedby(studentId);
+                    nsac.setSaccreatedat(LocalDateTime.now());
+                    nsac.setSacrowstate(1);
+                    studentAdjustmentRepo.save(nsac);
+                }
+            }
+        }
+    }
+
+    public void addNewCourseIds(Set<String> courseIds, Long srgid, Long termId, Short semesterId, Long studentId) {
+        if(courseIds != null) {
+            for (String courseId : courseIds) {
+                Integer scrid = semesterCoursesRepo.findScrid(semesterId, Long.parseLong(courseId));
+                Long tcrid = termCoursesRepo.findTcrid(Long.parseLong(courseId), termId);
+                StudentAdjustmentCourses sacid = studentAdjustmentRepo.findSacid(tcrid.intValue(), srgid);
+
+                StudentRegistrationCourses src = registrationCoursesRepo.getSrg(tcrid, srgid);
+                Long srcid;
+
+                if(src != null){
+                    srcid=src.getSrcid();
+                    src.setSrcstatus("ACTIVE");
+                    src.setSrcfield1("ADDED");
+                    src.setSrclastupdatedat(LocalDateTime.now());
+                    src.setSrclastupdatedby(20L);
+                    src.setSrclastupdatedat(LocalDateTime.now());
+                    registrationCoursesRepo.save(src);
+                }
+                else{
+                    Optional<Long> id = registrationCoursesRepo.findMaxSrcid();
+                    srcid=id.orElse(0L) + 1;
+                    StudentRegistrationCourses nsrc = new StudentRegistrationCourses();
+
+                    nsrc.setSrcid(srcid);
+                    nsrc.setSrcsrgid(srgid); // Use the same srgid as registration
+                    nsrc.setSrctcrid(tcrid);
+                    nsrc.setSrctype("REGULAR");
+                    nsrc.setSrcscrid(scrid);
+                    nsrc.setSrcstatus("ACTIVE");
+                    nsrc.setSrcfield1("ADDED");
+                    nsrc.setSrccreatedby(7L);
+                    nsrc.setSrccreatedat(LocalDateTime.now());
+                    nsrc.setSrcrowstate((short) 1);
+                    
+                    registrationCoursesRepo.save(nsrc);
+                }
+
+                if(sacid != null){
+                    sacid.setSacstatus("ACTIVE");
+                    sacid.setSacfield1("ADDED");
+                    sacid.setSaclastupdatedat(LocalDateTime.now());
+                    sacid.setSaclastupdatedby(studentId);
+                    studentAdjustmentRepo.save(sacid);
+                }
+                else{
+                    Optional<Long> maxsacid = studentAdjustmentRepo.getMaxId();
+                    StudentAdjustmentCourses nsac = new StudentAdjustmentCourses();
+                    nsac.setSacid(maxsacid.orElse(0L)+1);
+                    nsac.setSacsrcid(srcid);
+                    nsac.setSacsrgid(srgid);
+                    nsac.setSactcrid(tcrid.intValue());
+                    nsac.setSactype("REGULAR");
+                    nsac.setSacscrid(scrid);
+                    nsac.setSacstatus("ACTIVE");
+                    nsac.setSacfield1("ADDED");
+                    nsac.setSaccreatedby(studentId);
+                    nsac.setSaccreatedat(LocalDateTime.now());
+                    nsac.setSacrowstate(1);
+                    studentAdjustmentRepo.save(nsac);
+                }
+            }
+        }
+    }
+
+    public void addNewAuditCourseIds(List<String> courseIds, Long srgid, Long termId, Short semesterId, Long studentId) {
+        if(courseIds != null) {
+            for (String courseId : courseIds) {
+                Integer scrid = semesterCoursesRepo.findScrid(semesterId, Long.parseLong(courseId));
+                Long tcrid = termCoursesRepo.findTcrid(Long.parseLong(courseId), termId);
+                StudentAdjustmentCourses sacid = studentAdjustmentRepo.findSacid(tcrid.intValue(), srgid);
+
+                StudentRegistrationCourses src = registrationCoursesRepo.getSrg(tcrid, srgid);
+                Long srcid;
+
+                if(src != null){
+                    srcid=src.getSrcid();
+                    src.setSrcstatus("ACTIVE");
+                    src.setSrcfield1("ADDED");
+                    src.setSrclastupdatedat(LocalDateTime.now());
+                    src.setSrclastupdatedby(20L);
+                    src.setSrclastupdatedat(LocalDateTime.now());
+                    registrationCoursesRepo.save(src);
+                }
+                else{
+                    Optional<Long> id = registrationCoursesRepo.findMaxSrcid();
+                    srcid = id.orElse(0L) + 1;
+                    StudentRegistrationCourses nsrc = new StudentRegistrationCourses();
+
+                    nsrc.setSrcid(srcid);
+                    nsrc.setSrcsrgid(srgid); // Use the same srgid as registration
+                    nsrc.setSrctcrid(tcrid);
+                    nsrc.setSrctype("AUDIT");
+                    nsrc.setSrcscrid(scrid);
+                    nsrc.setSrcstatus("ACTIVE");
+                    nsrc.setSrcfield1("ADDED");
+                    nsrc.setSrcfield2("Pass/Not Pass Course");
+                    nsrc.setSrccreatedby(7L);
+                    nsrc.setSrccreatedat(LocalDateTime.now());
+                    nsrc.setSrcrowstate((short) 1);
+                    
+                    registrationCoursesRepo.save(nsrc);
+                }
+
+                if(sacid != null){
+                    sacid.setSacstatus("ACTIVE");
+                    sacid.setSacfield1("ADDED");
+                    sacid.setSaclastupdatedat(LocalDateTime.now());
+                    sacid.setSaclastupdatedby(studentId);
+                    studentAdjustmentRepo.save(sacid);
+                }
+                else{
+                    Optional<Long> maxsacid = studentAdjustmentRepo.getMaxId();
+                    StudentAdjustmentCourses nsac = new StudentAdjustmentCourses();
+                    nsac.setSacid(maxsacid.orElse(0L)+1);
+                    nsac.setSacsrcid(srcid);
+                    nsac.setSacsrgid(srgid);
+                    nsac.setSactcrid(tcrid.intValue());
+                    nsac.setSactype("AUDIT");
+                    nsac.setSacscrid(scrid);
+                    nsac.setSacstatus("ACTIVE");
+                    nsac.setSacfield1("ADDED");
+                    nsac.setSaccreatedby(studentId);
+                    nsac.setSaccreatedat(LocalDateTime.now());
+                    nsac.setSacrowstate(1);
+                    studentAdjustmentRepo.save(nsac);
+                }
+            }
+        }
+    }
+
+}

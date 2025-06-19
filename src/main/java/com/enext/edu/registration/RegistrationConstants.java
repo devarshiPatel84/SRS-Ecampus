@@ -11,4 +11,8 @@ public class RegistrationConstants {
     public static final String JSPSTUDENTREGISTRATIONEDIT = "edu/registration/DefaultRegistrationEdit";
     public static final String JSPSTUDENTREGISTRATIONVIEW = "edu/registration/DefaultRegistrationView";
     public static final String JSPSTUDENTREGISTRATIONSAVE = "edu/registration/DefaultRegistrationSave";
+    public static final String JSPCOURSEADDDROPLIST = "edu/registration/CourseAddDropList";
+    public static final String JSPCOURSEADDDROPVIEW = "edu/registration/CourseAddDropView";
+    public static final String JSPCOURSEADDDROPEDIT = "edu/registration/CourseAddDropEdit";
+    public static final String JSPCOURSEADDDROPSAVE = "edu/registration/CourseAddDropSave";
 }

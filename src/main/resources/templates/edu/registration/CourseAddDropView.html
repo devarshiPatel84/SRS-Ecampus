@@ -77,8 +77,10 @@
     <tr>
         <td class="sidemenu"></td>
         <td class="content">
-            <div th:if="${studentRegistrationbean} == null">
-                <h2>No courses registered for this semester.</h2>
+            <div th:if="${studentRegistrationbean} == null" class="text-center">
+                <h3>No Course Registrations Found</h3>
+                <p>You have not registered for any courses yet.</p>
+                <p><strong>To register, please go to the Registration tab.</strong></p>
             </div>
 
             <div th:unless="${studentRegistrationbean} == null" class="table-container">
@@ -132,7 +134,7 @@
                     <button type="submit" class="btn btn-secondary">Back</button>
                 </form> -->
                 <div class="text-center mt-3">
-                    <a th:href="@{/studentRegistrations}" class="btn btn-secondary">Back</a>
+                    <a th:href="@{/CourseAddDrop}" class="btn btn-secondary">Back</a>
                 </div>
 
             </div>
