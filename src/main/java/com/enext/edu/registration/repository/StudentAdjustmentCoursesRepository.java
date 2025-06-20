@@ -25,4 +25,7 @@ public interface StudentAdjustmentCoursesRepository extends JpaRepository<Studen
     @Transactional
     @Query(value = "DELETE FROM ec2.STUDENTADJUSTMENTCOURSES sac WHERE sac.SACID = :sacid", nativeQuery = true)
     void deleteSacid(@Param("scrid") Long sacid);
+
+    @Query(value = "SELECT * FROM ec2.STUDENTADJUSTMENTCOURSES sac WHERE sac.SACSRGID = :srgid AND sac.SACROWSTATE>0", nativeQuery = true)
+    List<StudentAdjustmentCourses> findBySrgid(Long srgid);
 }
