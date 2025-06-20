@@ -34,4 +34,7 @@ public interface StudentRegistrationCoursesRepository extends JpaRepository<Stud
     @Query("DELETE FROM StudentRegistrationCourses s WHERE s.srcid = :srcid")
     void deleteSrcid(@Param("srcid") Long srcid);
 
+    @Query(value = "SELECT * FROM ec2.STUDENTREGISTRATIONCOURSES src WHERE src.SRCSRGID = :srgid AND src.SRCROWSTATE > 0", nativeQuery = true)
+    List<StudentRegistrationCourses> findBySrgid(Long srgid);
+
 }
