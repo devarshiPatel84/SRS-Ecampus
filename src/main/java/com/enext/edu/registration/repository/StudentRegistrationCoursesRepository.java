@@ -37,4 +37,7 @@ public interface StudentRegistrationCoursesRepository extends JpaRepository<Stud
     @Query(value = "SELECT * FROM ec2.STUDENTREGISTRATIONCOURSES src WHERE src.SRCSRGID = :srgid AND src.SRCROWSTATE > 0", nativeQuery = true)
     List<StudentRegistrationCourses> findBySrgid(Long srgid);
 
+    @Query(value = "SELECT COUNT(*) FROM ec2.STUDENTREGISTRATIONCOURSES src WHERE src.SRCSRGID = :srgid AND src.SRCTCRID = :tcrid AND src.SRCSTATUS = 'ACTIVE' AND src.SRCROWSTATE > 0", nativeQuery = true)
+    Long countActiveRegistrations(@Param("srgid") Long srgid, @Param("tcrid") Long tcrid);
+
 }

@@ -16,4 +16,8 @@ public interface SemestersRepository extends JpaRepository<Semesters, Short> {
 
     @Query(value = "SELECT MAX(sm.STRID) FROM ec2.SEMESTERS sm WHERE sm.STRROWSTATE > 0 AND sm.STRBCHID = :batchId", nativeQuery = true)
     Short findMaxSemesterId(@Param("batchId") Short batchId);
+
+    @Query(value = "SELECT sm.STRID FROM ec2.SEMESTERS sm WHERE sm.STRROWSTATE > 0 AND sm.STRBCHID = :batchId AND sm.STRTRMID = :termId", nativeQuery = true)
+    Long findSemesterId(@Param("batchId") Long batchId, @Param("termId") Long termId);
+
 }

@@ -11,4 +11,10 @@ import org.springframework.stereotype.Repository;
 public interface StudentsRepository extends JpaRepository<Students, Long> {
     @Query(value = "select * from ec2.students st where st.stdrowstate > 0 and st.stdid = :studentId", nativeQuery = true)
     Students findstudent(@Param("studentId") Long studentId);
+
+    @Query(value = "SELECT st.STDID FROM ec2.students st WHERE st.STDINSTID = :studentId ORDER BY stdrowstate DESC LIMIT 1", nativeQuery = true)
+    Long findstdid(@Param("studentId") String studentId);
+
+    @Query(value = "SELECT st.STDBCHID FROM ec2.students st WHERE st.STDINSTID = :studentId ORDER BY stdrowstate DESC LIMIT 1", nativeQuery = true)
+    Long findBatchIdByStudentId(@Param("studentId") String studentId);
 }
