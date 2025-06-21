@@ -17,4 +17,7 @@ public interface CoursesRepository extends JpaRepository<Courses, Short> {
     @Query(value = "SELECT * FROM ec2.COURSEGROUPCOURSES cgc, ec2.COURSES crs WHERE cgc.CGCROWSTATE > 0 AND crs.CRSROWSTATE > 0 AND crs.CRSID = cgc.CGCCRSID AND cgc.CGCCGPID = :cgpId AND crs.CRSID IN (SELECT tc.tcrcrsid FROM ec2.TERMCOURSEAVAILABLEFOR tca, ec2.TERMCOURSES tc WHERE tca.tcaprgid = :prgId AND tca.tcatcrid = tc.tcrid AND tcastatus = 'T' AND tca.tcarowstate > 0 AND tc.tcrrowstate > 0 AND tc.tcrtrmid = :trmId) ORDER BY crs.crsname", nativeQuery = true)
     List<Courses> getbycgpId(@Param("cgpId") Short cgpId, @Param("prgId") Short prgId, @Param("trmId") Short trmId);
 
+    @Query(value = "SELECT crs.CRSID FROM ec2.COURSES crs WHERE crs.CRSROWSTATE > 0 AND crs.CRSCODE = :courseCode", nativeQuery = true)
+    Long findCourseIdByName(@Param("courseCode") String courseCode);
+
 }
