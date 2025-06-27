@@ -73,7 +73,7 @@ public class CourseDropEditController {
         model.addAttribute("programbean", pr);
         model.addAttribute("termbean", trm);
 
-        boolean isWithinDeadline = deadlineConfig.addDropisWithinDeadline();
+        boolean isWithinDeadline = deadlineConfig.dropisWithinDeadline();
 
         Short maxStrid = registrationService.getMaxSemesterId(st.getStdbchid());
 

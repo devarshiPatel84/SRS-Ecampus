@@ -41,6 +41,7 @@ public class StudentRegistrationSaveService {
         registration.setSrgstrid(semesterId);
         registration.setSrgregdate(LocalDate.now());
         registration.setSrgcreatedat(LocalDateTime.now());
+        registration.setSrgcreatedby(7L);
         registration.setSrglastupdatedat(LocalDateTime.now());
         registration.setSrgrowstate((short) 1);
 
@@ -103,7 +104,7 @@ public class StudentRegistrationSaveService {
             for (String courseId : selectedGICourseIds) {
                 StudentRegistrationCourses src = new StudentRegistrationCourses();
                 src.setSrcsrgid(srgid); // Use the same srgid as registration
-                src.setSrctype("REGULAR");
+                src.setSrctype("GRADE IMPROVEMENT");
                 src.setSrcstatus("ACTIVE");
                 src.setSrccreatedby(7L);
                 src.setSrccreatedat(LocalDateTime.now());
@@ -127,7 +128,7 @@ public class StudentRegistrationSaveService {
             for (String courseId : selectedBacklogCourseIds) {
                 StudentRegistrationCourses src = new StudentRegistrationCourses();
                 src.setSrcsrgid(srgid); // Use the same srgid as registration
-                src.setSrctype("REGULAR");
+                src.setSrctype("BACKLOG");
                 src.setSrcstatus("ACTIVE");
                 src.setSrccreatedby(7L);
                 src.setSrccreatedat(LocalDateTime.now());

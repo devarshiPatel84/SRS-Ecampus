@@ -1,32 +1,32 @@
 package com.enext.edu.registration.controller;
 
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.*;
+import com.enext.edu.registration.RegistrationConstants;
+import com.enext.edu.registration.config.RegistrationDeadlineConfig;
+import com.enext.edu.registration.model.*;
+import com.enext.edu.registration.service.*;
+
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.enext.edu.registration.RegistrationConstants;
-import com.enext.edu.registration.config.RegistrationDeadlineConfig;
-import com.enext.edu.registration.model.Semesters;
-import com.enext.edu.registration.model.StudentRegistrations;
-import com.enext.edu.registration.model.Students;
-import com.enext.edu.registration.service.StudentRegistrationService;
-
-import jakarta.servlet.http.HttpSession;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Controller
-public class CourseDropController {
+public class SemesterResultController {
+
     @Autowired
     private StudentRegistrationService registrationService;
 
     @Autowired
     private RegistrationDeadlineConfig deadlineConfig;
 
-    @GetMapping("/CourseDrop")
+    @GetMapping("/gradeSemesterList")
     public String listStudentRegistrations(
             // @RequestParam(name = RegistrationConstants.PARAM_STUDENT_ID, required = true) Long studentId,
             HttpSession session,
@@ -43,15 +43,15 @@ public class CourseDropController {
         Map<Short, StudentRegistrations> registrationsMap = regs.stream()
                 .collect(Collectors.toMap(StudentRegistrations::getSrgstrid, Function.identity()));
         
-        boolean addDropisWithinDeadline = deadlineConfig.dropisWithinDeadline();
+        boolean isWithinDeadline = deadlineConfig.isWithinDeadline();
 
         Short maxStrid = registrationService.getMaxSemesterId(st.getStdbchid());
 
-        model.addAttribute("isWithinDeadline", addDropisWithinDeadline);
+        model.addAttribute("isWithinDeadline", isWithinDeadline);
         model.addAttribute("maxStrid", maxStrid);
         model.addAttribute("studentbean", st);
         model.addAttribute("semestersbean", smt);
         model.addAttribute(RegistrationConstants.ATTRIBUTESTUDENTREGISTRATIONS,registrationsMap);
-        return RegistrationConstants.JSPCOURSEDROPLIST;
-    }   
+        return RegistrationConstants.JSPSEMESTERESULTLIST;
+    }
 }

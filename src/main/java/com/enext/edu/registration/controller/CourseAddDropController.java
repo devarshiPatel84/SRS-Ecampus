@@ -45,7 +45,7 @@ public class CourseAddDropController {
         Map<Short, StudentRegistrations> registrationsMap = regs.stream()
                 .collect(Collectors.toMap(StudentRegistrations::getSrgstrid, Function.identity()));
         
-        boolean addDropisWithinDeadline = deadlineConfig.isWithinDeadline();
+        boolean addDropisWithinDeadline = deadlineConfig.addDropisWithinDeadline();
 
         Short maxStrid = registrationService.getMaxSemesterId(st.getStdbchid());
 

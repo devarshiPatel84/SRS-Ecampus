@@ -2,9 +2,14 @@ package com.enext.edu.registration.repository;
 
 import com.enext.edu.registration.model.EGGRADM1;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EGGRADM1Repository extends JpaRepository<EGGRADM1, Short> {
-    // Custom queries can be added here
+    
+    @Query(value = "SELECT eg.GRAD_LT FROM ec2.EGGRADM1 eg WHERE eg.GRAD_ID = :obtgr AND eg.ROW_ST > 0", nativeQuery = true)
+    String getGrade(@Param("obtgr") Integer obtgr);
+
 }

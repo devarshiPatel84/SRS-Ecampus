@@ -45,6 +45,7 @@ public class StudentRegistrationSaveController {
 
         if(srg!=null){
             srg.setSrgregdate(LocalDate.now());
+            srg.setSrglastupdatedby(7L);
             srg.setSrglastupdatedat(LocalDateTime.now());
             srgid=srg.getSrgid();
             registrationRepo.save(srg);

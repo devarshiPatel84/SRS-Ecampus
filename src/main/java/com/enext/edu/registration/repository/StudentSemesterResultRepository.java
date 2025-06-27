@@ -15,4 +15,7 @@ public interface StudentSemesterResultRepository extends JpaRepository<StudentSe
     @Query(value = "SELECT ssr.SSRCPI FROM ec2.STUDENTSEMESTERRESULT ssr WHERE ssr.SSRSRGID in (SELECT srg.SRGID FROM ec2.STUDENTREGISTRATIONS srg WHERE srg.SRGSTDID=:studentId) ORDER BY ssr.SSRSRGID DESC LIMIT 1 OFFSET 1", nativeQuery = true)
     String getlcpi(@Param("studentId") Long studentId);
 
+    @Query(value = "SELECT * FROM ec2.STUDENTSEMESTERRESULT ssr WHERE ssr.SSRSRGID = :srgid", nativeQuery = true)
+    StudentSemesterResult getBySrgid(@Param("srgid") Long srgid);
+
 }

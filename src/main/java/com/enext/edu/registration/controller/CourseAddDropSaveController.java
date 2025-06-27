@@ -43,54 +43,83 @@ public class CourseAddDropSaveController {
 
         Long srgid=srg.getSrgid();
 
-        Set<String> selectedIds = new HashSet<>();
-        selectedIds.addAll(allParams.getOrDefault("selectedCourseIds", Collections.emptyList()));
-        selectedIds.addAll(allParams.getOrDefault("selectedOtherCourses", Collections.emptyList()));
-        selectedIds.addAll(allParams.getOrDefault("selectedGradeImprovementCourses", Collections.emptyList()));
-        selectedIds.addAll(allParams.getOrDefault("selectedBacklogCourses", Collections.emptyList()));
+        List<StudentRegistrationCourses> strgcrs = new ArrayList<>();
+        strgcrs = editService.getStudentRegistrationCourses(srgid);
 
-        Set<String> registeredIds = courseIds.stream()
-                .map(String::valueOf)
-                .collect(Collectors.toSet());
+        Set<String> regular = new HashSet<>();
+        Set<String> backlog = new HashSet<>();
+        Set<String> gradeImprovement = new HashSet<>();
+        Set<String> audit = new HashSet<>();
 
-        Set<String> deselectedCourses = new HashSet<>(registeredIds);
-        deselectedCourses.removeAll(selectedIds);
-
-        Set<String> newlySelectedCourses = new HashSet<>(selectedIds);
-        newlySelectedCourses.removeAll(registeredIds);
-
-        List<String> selectedAuditCourseIds = allParams.getOrDefault("selectedAuditCourses", Collections.emptyList());
-        Set<String> auditRegisteredCourseIds = new HashSet<>();
-        for (Short courseId : courseIds) {
-            String courseIdStr = String.valueOf(courseId);
-            if (selectedAuditCourseIds.contains(courseIdStr)) {
-                auditRegisteredCourseIds.add(courseIdStr);
+        for (StudentRegistrationCourses src : strgcrs) {
+            Long termcourseId = src.getSrctcrid();
+            
+            TermCourses tc = editService.getTermCourse(termcourseId);
+            Courses course = editService.getCourseById(tc.getTcrcrsid());
+            System.out.println("crsname: " + course.getCrsname());
+            System.out.println("type: " + src.getSrctype());
+            if (course != null && "REGULAR".equals(src.getSrctype())) {
+                regular.add("" + course.getCrsid());
+            }
+            else if(course != null && "BACKLOG".equals(src.getSrctype())) {
+                backlog.add("" + course.getCrsid());
+            }
+            else if(course != null && "GRADE IMPROVEMENT".equals(src.getSrctype())){
+                gradeImprovement.add("" + course.getCrsid());
+            }
+            else if(course != null && "AUDIT".equals(src.getSrctype())){
+                audit.add("" + course.getCrsid());
             }
         }
 
-        List<String> newAuditCourses = selectedAuditCourseIds.stream()
-                .filter(courseId -> !registeredIds.contains(courseId))
-                .collect(Collectors.toList());
+        Set<String> selectedregularIds = new HashSet<>();
+        selectedregularIds.addAll(allParams.getOrDefault("selectedCourseIds", Collections.emptyList()));
+        selectedregularIds.addAll(allParams.getOrDefault("selectedOtherCourses", Collections.emptyList()));
 
-        List<String> removedAuditCourses = auditRegisteredCourseIds.stream()
-                .filter(courseId -> !selectedAuditCourseIds.contains(courseId))
-                .collect(Collectors.toList());
+        Set<String> selectedbacklogIds = new HashSet<>();
+        selectedbacklogIds.addAll(allParams.getOrDefault("selectedBacklogCourses", Collections.emptyList()));
 
-        for (Map.Entry<String, List<String>> entry : allParams.entrySet()) {
-            System.out.println("Key: " + entry.getKey() + ", Values: " + entry.getValue());
-        }
+        Set<String> selectedgradeImprovementIds = new HashSet<>();
+        selectedgradeImprovementIds.addAll(allParams.getOrDefault("selectedGradeImprovementCourses", Collections.emptyList()));
 
-        System.out.println("courseIds: " + courseIds);
-        System.out.println("selectedIds: " + selectedIds);
-        System.out.println("deselectedCourses: " + deselectedCourses);
-        System.out.println("newlySelectedCourses: " + newlySelectedCourses);
-        System.out.println("newAuditCourses: " + newAuditCourses);
-        System.out.println("removedAuditCourses: " + removedAuditCourses);
+        Set<String> selectedauditIds = new HashSet<>();
+        selectedauditIds.addAll(allParams.getOrDefault("selectedAuditCourses", Collections.emptyList()));
 
-        saveCADService.removeCourseIds(deselectedCourses,srgid,termId,semesterId,studentId);
-        saveCADService.addNewCourseIds(newlySelectedCourses,srgid,termId,semesterId,studentId);
-        saveCADService.removeAuditCourseIds(removedAuditCourses,srgid,termId,semesterId,studentId);
-        saveCADService.addNewAuditCourseIds(newAuditCourses,srgid,termId,semesterId,studentId);
+
+
+        Set<String> deselectedregularCourses = new HashSet<>(regular);
+        deselectedregularCourses.removeAll(selectedregularIds);
+
+        Set<String> newlySelectedregularCourses = new HashSet<>(selectedregularIds);
+        newlySelectedregularCourses.removeAll(regular);
+
+        Set<String> deselectedbacklogCourses = new HashSet<>(backlog);
+        deselectedbacklogCourses.removeAll(selectedbacklogIds);
+
+        Set<String> newlySelectedbacklogCourses = new HashSet<>(selectedbacklogIds);
+        newlySelectedbacklogCourses.removeAll(backlog);
+
+        Set<String> deselectedgradeImprovementCourses = new HashSet<>(gradeImprovement);
+        deselectedgradeImprovementCourses.removeAll(selectedgradeImprovementIds);
+
+        Set<String> newlySelectedgradeImprovementCourses = new HashSet<>(selectedgradeImprovementIds);
+        newlySelectedgradeImprovementCourses.removeAll(gradeImprovement);
+
+        Set<String> deselectedauditCourses = new HashSet<>(audit);
+        deselectedauditCourses.removeAll(selectedauditIds);
+
+        Set<String> newlySelectedauditCourses = new HashSet<>(selectedauditIds);
+        newlySelectedauditCourses.removeAll(audit);
+
+        saveCADService.removeRegularCourseIds(deselectedregularCourses,srgid,termId,semesterId,studentId);
+        saveCADService.removeBacklogCourseIds(deselectedbacklogCourses,srgid,termId,semesterId,studentId);
+        saveCADService.removeGradeImprovementCourseIds(deselectedgradeImprovementCourses,srgid,termId,semesterId,studentId);
+        saveCADService.removeAuditCourseIds(deselectedauditCourses,srgid,termId,semesterId,studentId);
+
+        saveCADService.addNewRegularCourseIds(newlySelectedregularCourses,srgid,termId,semesterId,studentId);
+        saveCADService.addNewBacklogCourseIds(newlySelectedbacklogCourses,srgid,termId,semesterId,studentId);
+        saveCADService.addNewGradeImprovementCourseIds(newlySelectedgradeImprovementCourses,srgid,termId,semesterId,studentId);
+        saveCADService.addNewAuditCourseIds(newlySelectedauditCourses,srgid,termId,semesterId,studentId);
 
 
         // Add attributes for confirmation page
