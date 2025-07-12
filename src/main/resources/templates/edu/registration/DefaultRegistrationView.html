@@ -63,6 +63,40 @@
             text-align: center;
             margin-bottom: 25px;
         }
+
+        /* Adjusted style for the navbar to create a distinct strip */
+        .navbar {
+            background-color: #004080 !important; /* Slightly lighter blue */
+            margin-top: 10px; /* Space below the header */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Border around the entire navbar */
+        }
+        .navbar .nav-link {
+            color: white !important;
+        }
+        /* Dropdown menu styling */
+        .navbar .dropdown-menu {
+            background-color: white !important; /* White background for dropdown */
+            border: 1px solid rgba(0, 0, 0, 0.15); /* Add a subtle border */
+        }
+        .navbar .dropdown-item {
+            color: #003366 !important; /* Blue text for dropdown items */
+        }
+        .navbar .dropdown-item:hover {
+            background-color: lightskyblue !important; /* Light sky blue background on hover */
+            color: white !important; /* White text on hover for better contrast */
+        }
+        /* Adjust padding for nav links */
+        .navbar-nav .nav-item .nav-link {
+            padding: 8px 15px !important; /* Adjust padding to give space around text */
+        }
+        /* Hover effect for the entire nav item */
+        .navbar-nav .nav-item:hover {
+            background-color: lightskyblue !important; /* Light sky blue background on hover for the item */
+        }
+        .navbar-nav .nav-item:hover .nav-link,
+        .navbar-nav .nav-item:hover .dropdown-toggle {
+            color: white !important; /* White text on hover for better contrast */
+        }
     </style>
 </head>
 <body>
@@ -71,6 +105,88 @@
         <td colspan="3" class="top-bar">
             <span style="font-size: 24px; font-weight: bold;">DA-IICT</span>
             <span style="font-size: 16px;">&nbsp;Dhirubhai Ambani Institute of Information & Communication Technology</span>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="3">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page">Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Student Detail
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item">Student Profile</a></li>
+                                    <li><a class="dropdown-item">Internship Details</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/srs">Registration</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Course Adjustments
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/srs/CourseAddDropList">Add-Drop Course</a></li>
+                                    <li><a class="dropdown-item" href="/srs/CourseDropList">Drop Course</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/srs/GradeSemesterList">Result</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Hostel
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item">Bulletin Board</a></li>
+                                    <li><a class="dropdown-item">Complain</a></li>
+                                    <li><a class="dropdown-item">Suggestion Box</a></li>
+                                    <li><a class="dropdown-item">Absence Intimation</a></li>
+                                    <li><a class="dropdown-item">Visitor Room Booking</a></li>
+                                    <li><a class="dropdown-item">Rules/Regulations</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Fees
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item">Fee Receipts</a></li>
+                                    <li><a class="dropdown-item">Dues</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Attendance
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item">My Attendance</a></li>
+                                    <li><a class="dropdown-item">Add Attendance</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Utilities
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item">Change Password</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link">LOGOUT</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
         </td>
     </tr>
 
@@ -132,7 +248,7 @@
                     <button type="submit" class="btn btn-secondary">Back</button>
                 </form> -->
                 <div class="text-center mt-3">
-                    <a th:href="@{/studentRegistrations}" class="btn btn-secondary">Back</a>
+                    <a th:href="@{/srs}" class="btn btn-secondary">Back</a>
                 </div>
 
             </div>
